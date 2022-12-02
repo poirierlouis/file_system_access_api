@@ -1,0 +1,3 @@
+class AbortError {}
+
+class NotAllowedError {}
