@@ -15,7 +15,7 @@ class FileSystemHandle implements api0.FileSystemHandle {
 
   @override
   Future<bool> isSameEntry(api0.FileSystemHandle other) {
-    return handle.isSameEntry((other as dynamic).__handle);
+    return js.promiseToFuture(handle.isSameEntry((other as FileSystemHandle).handle));
   }
 
   @override
