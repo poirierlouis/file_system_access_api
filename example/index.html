@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File System Access API</title>
+    <script defer type="application/javascript" src="example.dart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" rel="stylesheet" />
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            --primary-color: #ff6f00;
+            --secondary-color: #0480fc;
+            --error-color: #b00020;
+
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --icon-color: #808080;
+            --border-color: rgba(128, 128, 128, 0.25);
+
+            --text-color: rgba(255, 255, 255, 0.9);
+
+            --primary-light10-color: #ffa040;
+
+            --primary-dark10-color: #c43e00;
+
+            --secondary-light20-color: #0091ff;
+
+            margin: 0;
+            height: inherit;
+
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 56px;
+            gap: 24px;
+
+            background-color: var(--primary-color);
+        }
+
+        section {
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        section#unsupported {
+            height: inherit;
+        }
+
+        section#tree {
+            color: var(--text-color);
+        }
+
+        a {
+            display: block;
+            height: inherit;
+            padding: 0 16px;
+
+            color: black;
+            line-height: 56px;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+
+        a:hover {
+            background-color: var(--primary-light10-color);
+        }
+
+        a.active {
+            background-color: var(--primary-light10-color);
+        }
+
+        .card {
+            display: flex;
+            flex-flow: column;
+            width: 33%;
+            height: fit-content;
+            padding: 24px;
+            margin: 12px;
+
+            color: var(--text-color);
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: justify;
+
+            background-color: var(--surface-color);
+            border-radius: 4px;
+        }
+
+        .card-info {
+            color: var(--primary-color);
+            justify-content: center;
+        }
+
+        .card-error {
+            color: var(--error-color);
+        }
+
+        .card p {
+            margin: 8px 0;
+            font-size: 1.25rem;
+            font-weight: normal;
+        }
+
+        .card p span {
+            color: var(--primary-color);
+        }
+
+        .card p span.button {
+            padding: 0 8px;
+
+            color: var(--text-color);
+            font-weight: normal;
+            text-transform: uppercase;
+
+            background-color: var(--secondary-color);
+            border-radius: 4px;
+        }
+
+        button {
+            margin: 24px;
+            padding: 8px 16px;
+
+            color: var(--text-color);
+            font-size: 1rem;
+            font-family: 'Roboto', sans-serif;
+            text-transform: uppercase;
+
+            background-color: var(--secondary-color);
+            border: none;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            cursor: pointer;
+
+            background-color: var(--secondary-light20-color);
+        }
+
+        img {
+            max-width: 80%;
+        }
+
+        section#editor textarea {
+            width: 60%;
+            height: 60vw;
+            margin-bottom: 24px;
+
+            color: var(--text-color);
+            font-size: 1rem;
+            font-family: 'Roboto', sans-serif;
+
+            background-color: var(--surface-color);
+            border: none;
+            border-radius: 4px;
+        }
+
+        div#root {
+            width: calc(100% - 24px * 2);
+            margin: auto;
+            padding: 24px;
+        }
+
+        .tree-panel {
+            margin-left: 10px;
+            padding-left: 24px;
+
+            border-left: 2px solid var(--border-color);
+        }
+
+        .tree-node {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+
+            font-size: 1rem;
+        }
+
+        .tree-node-folder {
+            cursor: pointer;
+        }
+
+        .tree-node span {
+            margin-right: 12px;
+            color: var(--icon-color);
+        }
+
+        .tree-node-folder span {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <header style="display:none">
+        <a href="#about" class="active">About</a>
+        <a href="#viewer">Image viewer</a>
+        <a href="#editor">Text editor</a>
+        <a href="#tree">Tree viewer</a>
+    </header>
+
+    <section id="unsupported" style="display:none">
+        <div class="card card-error">
+            This browser does not currently support the File System Access API. Please try with Chrome, Edge or Opera.
+        </div>
+    </section>
+
+    <section id="about" style="display:none">
+        <div class="card">
+            <p>This demo contains a set of examples to use the File System Access API through this Dart library.</p>
+            <p>Below is a description of each tool you can test:</p>
+            <p>Enjoy 😄</p>
+        </div>
+
+        <div class="card">
+            <p>
+                <span>Image Viewer</span> to open an image file and display its content. It accepts only .png, .gif,
+                .jpg and .webp file formats.
+            </p>
+        </div>
+
+        <div class="card">
+            <p><span>Text Editor</span> to access files as text and edit them.</p>
+            <p>Click on <span class="button">new</span> to reset editor and start a new document.</p>
+            <p>
+                Click on <span class="button">open</span> to open a file and edit its content.
+                Clicking on <span class="button">save</span> will save modifications in this file.
+            </p>
+            <p>
+                Clicking on <span class="button">save</span> when no file was opened will show you a dialog to pick a
+                file to save to.
+            </p>
+        </div>
+
+        <div class="card">
+            <p><span>Tree Viewer</span> to list files/directories of a selected directory.</p>
+            <p>Click on directories to open/close their contents.</p>
+            <p>Click on an image file to open it in the <span>Image Viewer</span>.</p>
+            <p>Click on a text file to open it in the <span>Text Editor</span>.</p>
+        </div>
+    </section>
+
+    <section id="viewer" style="display:none">
+        <button>Open an image</button>
+        <img src="" alt="Loaded image from user's local file system" style="display:none" />
+    </section>
+
+    <section id="editor" style="display:none">
+        <div>
+            <button id="new">New</button>
+            <button id="open">Open</button>
+            <button id="save">Save</button>
+        </div>
+
+        <textarea></textarea>
+    </section>
+
+    <section id="tree" style="display:none">
+        <div>
+            <button id="open">Open a directory</button>
+            <button id="clear">Clear recent</button>
+        </div>
+        <div id="root"></div>
+        <div id="loading" class="card card-info" style="display:none">
+            Loading...
+        </div>
+        <div id="error" class="card card-error" style="display:none">
+            You must pick a directory.
+        </div>
+    </section>
+</body>
+</html>
