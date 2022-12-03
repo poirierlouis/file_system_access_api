@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - js-interop bindings for `showOpenFilePicker`, `showSaveFilePicker` and `showDirectoryPicker` on Window.
 - js-interop bindings for File System Access API objects.
 - examples to demonstrate usage of this library.
+- Dart typed errors to replace vague DomException errors.
 
 <!-- ## [1.0.0] - 2022-12-?? -->
 
