@@ -61,7 +61,11 @@ extension WindowFileSystemAccess on Window {
 
       return handles.map((handle) => wrapper0.FileSystemFileHandle(handle)).toList(growable: false);
     } catch (error) {
-      throw AbortError();
+      if (jsIsNativeError(error, "AbortError")) {
+        throw AbortError();
+      } else {
+        rethrow;
+      }
     }
   }
 
@@ -112,7 +116,11 @@ extension WindowFileSystemAccess on Window {
 
       return wrapper0.FileSystemFileHandle(handle);
     } catch (error) {
-      throw AbortError();
+      if (jsIsNativeError(error, "AbortError")) {
+        throw AbortError();
+      } else {
+        rethrow;
+      }
     }
   }
 
@@ -153,7 +161,11 @@ extension WindowFileSystemAccess on Window {
 
       return wrapper1.FileSystemDirectoryHandle(handle);
     } catch (error) {
-      throw AbortError();
+      if (jsIsNativeError(error, "AbortError")) {
+        throw AbortError();
+      } else {
+        rethrow;
+      }
     }
   }
 

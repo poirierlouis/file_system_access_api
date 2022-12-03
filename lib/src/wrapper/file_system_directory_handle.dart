@@ -1,3 +1,4 @@
+import 'package:file_system_access_api/src/api/errors.dart';
 import 'package:file_system_access_api/src/api/file_system_directory_handle.dart' as api0;
 import 'package:file_system_access_api/src/api/file_system_file_handle.dart' as api1;
 import 'package:file_system_access_api/src/api/file_system_handle.dart' as api2;
@@ -28,39 +29,74 @@ class FileSystemDirectoryHandle extends wrapper1.FileSystemHandle implements api
 
   @override
   Future<api1.FileSystemFileHandle?> getFileHandle(String name, [bool create = false]) async {
-    dynamic dataRaw = await js.promiseToFuture(
-      _handle.getFileHandle(
-        name,
-        interop0.FileSystemGetFileOptions(create: create),
-      ),
-    );
-
     try {
+      dynamic dataRaw = await js.promiseToFuture(
+        _handle.getFileHandle(
+          name,
+          interop0.FileSystemGetFileOptions(create: create),
+        ),
+      );
+
       return wrapper0.FileSystemFileHandle(dataRaw);
     } catch (error) {
-      return null;
+      if (jsIsNativeError(error, "NotAllowedError")) {
+        throw NotAllowedError();
+      } else if (jsIsNativeError(error, "TypeError")) {
+        throw MalformedNameError();
+      } else if (jsIsNativeError(error, "TypeMismatchError")) {
+        throw TypeMismatchError();
+      } else if (jsIsNativeError(error, "NotFoundError")) {
+        throw NotFoundError();
+      } else {
+        rethrow;
+      }
     }
   }
 
   @override
   Future<FileSystemDirectoryHandle?> getDirectoryHandle(String name, [bool create = false]) async {
-    dynamic dataRaw = await js.promiseToFuture(
-      _handle.getDirectoryHandle(
-        name,
-        interop0.FileSystemGetDirectoryOptions(create: create),
-      ),
-    );
-
     try {
+      dynamic dataRaw = await js.promiseToFuture(
+        _handle.getDirectoryHandle(
+          name,
+          interop0.FileSystemGetDirectoryOptions(create: create),
+        ),
+      );
+
+      if (dataRaw == null || dataRaw == undefined) {
+        return null;
+      }
       return FileSystemDirectoryHandle(dataRaw);
     } catch (error) {
-      return null;
+      if (jsIsNativeError(error, "NotAllowedError")) {
+        throw NotAllowedError();
+      } else if (jsIsNativeError(error, "TypeMismatchError")) {
+        throw TypeMismatchError();
+      } else if (jsIsNativeError(error, "NotFoundError")) {
+        throw NotFoundError();
+      } else {
+        rethrow;
+      }
     }
   }
 
   @override
   Future<void> removeEntry(String name, [bool recursive = false]) {
-    return js.promiseToFuture(_handle.removeEntry(name, interop0.FileSystemRemoveOptions(recursive: recursive)));
+    try {
+      return js.promiseToFuture(_handle.removeEntry(name, interop0.FileSystemRemoveOptions(recursive: recursive)));
+    } catch (error) {
+      if (jsIsNativeError(error, "NotAllowedError")) {
+        throw NotAllowedError();
+      } else if (jsIsNativeError(error, "TypeError")) {
+        throw MalformedNameError();
+      } else if (jsIsNativeError(error, "InvalidModificationError")) {
+        throw InvalidModificationError();
+      } else if (jsIsNativeError(error, "NotFoundError")) {
+        throw NotFoundError();
+      } else {
+        rethrow;
+      }
+    }
   }
 
   @override

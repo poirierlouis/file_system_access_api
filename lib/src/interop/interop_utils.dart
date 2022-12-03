@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:js/js.dart';
 import 'package:js/js_util.dart';
 
@@ -24,6 +26,31 @@ Object mapToJsObject(Map<dynamic, dynamic> a) {
     }
   }
   return obj;
+}
+
+/// Rethrows a Dart typed error based on a JavaScript error message.
+///
+/// e.g. AbortError in JavaScript will unwrap to a [DomException] with name "AbortError".
+///
+/// ```dart
+/// try {
+///   // ...
+/// } catch (error) {
+///   if (jsIsNativeError(error, "AbortError")) {
+///     throw AbortError();
+///   } else {
+///     rethrow;
+///   }
+/// }
+/// ```
+bool jsIsNativeError(Object? object, String expectedType) {
+  if (object is DomException) {
+    return object.name == expectedType;
+  }
+  if (object is! String) {
+    return false;
+  }
+  return object.contains(expectedType);
 }
 
 /// Convert a JavaScript asynchronous [iterator] into a Dart [Stream].

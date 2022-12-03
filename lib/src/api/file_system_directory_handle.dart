@@ -31,8 +31,8 @@ abstract class FileSystemDirectoryHandle implements FileSystemHandle {
   /// Default [false].
   ///
   /// Throws a [NotAllowedError] if the state for the handle is not [PermissionState.granted].
-  /// Throws a [TypeError] if the name specified is not a valid string or contains characters not allowed on the file
-  /// system.
+  /// Throws a [MalformedNameError] if the name specified is not a valid string or contains characters not allowed on
+  /// the file system.
   /// Throws a [TypeMismatchError] if the named entry is a directory and not a file.
   /// Throws a [NotFoundError] if file doesn't exist and the create option is set to [false].
   Future<FileSystemFileHandle?> getFileHandle(String name, [bool create = false]);
@@ -56,7 +56,8 @@ abstract class FileSystemDirectoryHandle implements FileSystemHandle {
   /// [recursive]: when set to [true] entries will be removed recursively, default [false].
   ///
   /// Throws a [NotAllowedError] if the state for the handle is not [PermissionState.granted].
-  /// Throws a [TypeError] if the name is not a valid string or contains characters not allowed on the file system.
+  /// Throws a [MalformedNameError] if the name is not a valid string or contains characters not allowed on the file
+  /// system.
   /// Throws an [InvalidModificationError] if [recursive] is set to [false] and the entry to be removed has children.
   /// Throws a [NotFoundError] if an entry name is not found or matched.
   Future<void> removeEntry(String name, [bool recursive = false]);

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:file_system_access_api/src/api/errors.dart';
 import 'package:file_system_access_api/src/api/file_system_file_handle.dart' as api0;
 import 'package:file_system_access_api/src/interop/file_system_file_handle.dart' as interop0;
+import 'package:file_system_access_api/src/interop/interop_utils.dart';
 import 'package:file_system_access_api/src/wrapper/file_system_handle.dart' as wrapper0;
 import 'package:js/js_util.dart' as js;
 
@@ -19,7 +20,11 @@ class FileSystemFileHandle extends wrapper0.FileSystemHandle implements api0.Fil
 
       return file as html.File;
     } catch (error) {
-      throw NotAllowedError();
+      if (jsIsNativeError(error, "NotAllowedError")) {
+        throw NotAllowedError();
+      } else {
+        rethrow;
+      }
     }
   }
 
@@ -32,7 +37,11 @@ class FileSystemFileHandle extends wrapper0.FileSystemHandle implements api0.Fil
 
       return FileSystemWritableFileStream(stream);
     } catch (error) {
-      throw NotAllowedError();
+      if (jsIsNativeError(error, "NotAllowedError")) {
+        throw NotAllowedError();
+      } else {
+        rethrow;
+      }
     }
   }
 }
@@ -64,7 +73,11 @@ class FileSystemWritableFileStream extends WritableStream implements api0.FileSy
     try {
       return js.promiseToFuture(_stream.seek(position));
     } catch (error) {
-      throw NotAllowedError();
+      if (jsIsNativeError(error, "NotAllowedError")) {
+        throw NotAllowedError();
+      } else {
+        rethrow;
+      }
     }
   }
 
@@ -75,7 +88,11 @@ class FileSystemWritableFileStream extends WritableStream implements api0.FileSy
     try {
       return js.promiseToFuture(_stream.truncate(size));
     } catch (error) {
-      throw NotAllowedError();
+      if (jsIsNativeError(error, "NotAllowedError")) {
+        throw NotAllowedError();
+      } else {
+        rethrow;
+      }
     }
   }
 
@@ -83,7 +100,11 @@ class FileSystemWritableFileStream extends WritableStream implements api0.FileSy
     try {
       return js.promiseToFuture(_stream.write(data));
     } catch (error) {
-      throw NotAllowedError();
+      if (jsIsNativeError(error, "NotAllowedError")) {
+        throw NotAllowedError();
+      } else {
+        rethrow;
+      }
     }
   }
 }
@@ -123,14 +144,20 @@ class WritableStreamDefaultWriter implements api0.WritableStreamDefaultWriter {
 
   @override
   Future<void> get closed => js.promiseToFuture(_writer.closed);
+
   @override
   double? get desiredSize => _writer.desiredSize;
+
   @override
   Future<void> get ready => js.promiseToFuture(_writer.ready);
 
   @override
   Future<void> abort([String? reason]) {
-    return js.promiseToFuture(_writer.abort(reason));
+    try {
+      return js.promiseToFuture(_writer.abort(reason));
+    } catch (error) {
+      throw Error();
+    }
   }
 
   @override
