@@ -108,14 +108,14 @@ void main() async {
         mode: PermissionMode.read
     );
     
-    // List of handles in a directory are emitted with a Stream. You can store content in a list to cache handles,
-    // but any changes of content in the directory will be ignored (prevent watch-like feature).
+    // List of handles in a directory emitted with a [Stream].
+    // Listen periodically on [Stream] to reproduce a file system watch-like feature.
     await for (FileSystemHandle handle in directory.values) {
       if (handle is FileSystemFileHandle) {
         print("<file name='${handle.name}' />");
       } else if (handle is FileSystemDirectoryHandle) {
         print("<directory name='${handle.name}/' />");
-        // You can create, move and delete files. See example/ for more on this.
+        // You can create, move and delete files/directories. See example/ for more on this.
       }
     }
   } on AbortError {
