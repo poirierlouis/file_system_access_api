@@ -33,5 +33,8 @@ abstract class FileSystemHandle {
   Future<PermissionState> requestPermission({required PermissionMode mode});
 
   /// Returns underlying JavaScript object to store handle in IndexedDB.
+  ///
+  /// **Note:** this feature is not working. See this [issue](https://github.com/dart-lang/sdk/issues/50621) to follow
+  /// up.
   dynamic toStorage();
 }
