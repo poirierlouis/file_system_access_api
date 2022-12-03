@@ -199,7 +199,7 @@ This library is available under [MIT license].
 [Chrome, Edge and Opera browsers]: https://developer.mozilla.org/docs/Web/API/File_System_Access_API#browser_compatibility
 [Drag and Drop]: https://developer.mozilla.org/docs/Web/API/DataTransferItem/getAsFileSystemHandle
 [Synchronous access in Web Workers]: https://fs.spec.whatwg.org/#api-filesystemfilehandle-createsyncaccesshandle
-[issue #50621]:(https://github.com/dart-lang/sdk/issues/50621)
+[issue #50621]: https://github.com/dart-lang/sdk/issues/50621
 
 [issues]: https://github.com/poirierlouis/file_system_access_api/issues
 [pull-requests]: https://github.com/poirierlouis/file_system_access_api/pulls
