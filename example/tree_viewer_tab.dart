@@ -39,9 +39,10 @@ class TreeViewerTab {
 
       await showTree(directory);
       await _storage!.set("tree-recent", directory.toStorage());
+    } on AbortError {
+      $cardError.show();
     } catch (error) {
       print(error);
-      $cardError.show();
     }
   }
 

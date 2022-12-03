@@ -43,7 +43,11 @@ class TextEditorTab {
       final handles = await window.showOpenFilePicker(excludeAcceptAllOption: true, types: types);
 
       await openFile(handles.single);
-    } catch (_) {}
+    } on AbortError {
+      print("User dismissed dialog or picked a file deemed too sensitive or dangerous.");
+    } catch (error) {
+      print(error);
+    }
   }
 
   Future<void> openFile(FileSystemFileHandle handle) async {
@@ -64,7 +68,11 @@ class TextEditorTab {
           excludeAcceptAllOption: true,
           types: types,
         );
-      } catch (_) {
+      } on AbortError {
+        print("User dismissed dialog or picked a file deemed too sensitive or dangerous.");
+        return;
+      } catch (error) {
+        print(error);
         return;
       }
     }

@@ -29,6 +29,8 @@ class ImageViewerTab {
       final image = await loadImageAsBase64(file);
 
       showImage(image);
+    } on AbortError {
+      print("User dismissed dialog or picked a file deemed too sensitive or dangerous.");
     } catch (error) {
       print(error);
     }
