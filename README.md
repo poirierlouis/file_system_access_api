@@ -7,17 +7,158 @@ web apps.
 
 ## Features
 
-TBD.
+This library reflects the web File System Access API using Dart types.
+See a more detailed description on [MDN Web Docs] or keep reading to [Usage](#usage) section below.
 
 ## Getting started
 
-TBD.
+Install library in your Dart project:
+```shell
+$ dart pub add file_system_access_api
+$ dart pub get
+```
+
+You're all set to play around with the API.
+> Note that in a cross-platform Flutter project, you can use this library only in a Web environment.
+> Use `kIsWeb` to prevent building/runtime errors and optimize build size.
 
 ## Usage
 
-TBD.
+You can reproduce example from the web API as much of the interfaces are transparent between this Dart library and the 
+JavaScript API.
 
-See examples in `example/` folder.
+### Open file(s)
+You can ask a user to open file(s) with the method `window.showOpenFilePicker()` and access selected files like this:
+```dart
+import 'dart:html';
+
+import 'package:file_system_access_api/file_system_access_api.dart';
+
+void main() async {
+  try {
+    List<FileSystemFileHandle> handles = await window.showOpenFilePicker(
+        multiple: true, 
+        excludeAcceptAllOption: true,
+        types: [FilePickerAcceptType(description: "Pictures", accept: {"image/png+jpg": [".png", ".jpg"]})],
+        startIn: WellKnownDirectory.pictures
+    );
+    
+    for (final handle in handles) {
+      File file = await handle.getFile();
+      
+      print("<file name='${handle.name}' size='${file.size} bytes' />");
+      
+      // You can read content of a File using a FileReader, like any other File coming from 'dart:html'
+    }
+  } on AbortError {
+    print("User dismissed dialog or picked a file deemed too sensitive or dangerous.");
+  }
+}
+```
+
+### Save a file
+You can ask a user where to save a file with the method `window.showSaveFilePicker()` and write in the selected file 
+like this:
+```dart
+import 'dart:html';
+
+import 'package:file_system_access_api/file_system_access_api.dart';
+
+void main() async {
+  try {
+    FileSystemFileHandle handle = await window.showSaveFilePicker(
+        suggestedName: "awesome.dart",
+        excludeAcceptAllOption: true,
+        types: [FilePickerAcceptType(description: "Dart files", accept: {"application/dart": [".dart"]})],
+        startIn: WellKnownDirectory.documents
+    );
+
+    FileSystemWritableFileStream stream = await handle.createWritable();
+    
+    await stream.writeAsText(
+        "void main() {"
+        "  print('This is the way.');"
+        "}"
+    );
+    await stream.close();
+    // Note that data will be written on disk only after call to close() completed.
+  } on AbortError {
+    print("User dismissed dialog or picked a file deemed too sensitive or dangerous.");
+  } on NotAllowedError {
+    print("User did not granted permission to readwrite in this file.");
+  }
+}
+```
+
+### Open a directory
+You can ask a user to pick a directory `window.showDirectoryPicker()` and recursively access files and directories like 
+this:
+```dart
+import 'dart:html';
+
+import 'package:file_system_access_api/file_system_access_api.dart';
+
+void main() async {
+  try {
+    FileSystemDirectoryHandle directory = await window.showDirectoryPicker(
+        // Use readwrite to ask permission and grant write access on files instead.
+        mode: PermissionMode.read
+    );
+    
+    // List of handles in a directory are emitted with a Stream. You can store content in a list to cache handles,
+    // but any changes of content in the directory will be ignored (prevent watch-like feature).
+    await for (FileSystemHandle handle in directory.values) {
+      if (handle is FileSystemFileHandle) {
+        print("<file name='${handle.name}' />");
+      } else if (handle is FileSystemDirectoryHandle) {
+        print("<directory name='${handle.name}/' />");
+        // You can create, move and delete files. See example/ for more on this.
+      }
+    }
+  } on AbortError {
+    print("User dismissed dialog or picked a directory deemed too sensitive or dangerous.");
+  }
+}
+```
+
+### Permissions
+You can query / request permission on files and directories from the user. It allows you to write in files, modify a 
+directory structure, etc. Those methods are available per file/directory handle:
+```dart
+import 'dart:html';
+
+import 'package:file_system_access_api/file_system_access_api.dart';
+
+void main() async {
+  try {
+    final handles = await window.showOpenFilePicker(multiple: false);
+    final handle = handles.single;
+    
+    var permission = await handle.queryPermission(mode: PermissionMode.readwrite);
+    
+    if (permission != PermissionState.granted) {
+      print("Asking permission to read and write");
+      permission = await handle.requestPermission(mode: PermissionMode.readwrite);
+      if (permission != PermissionState.granted) {
+        print("read/write access refused, either prompt was dismissed or denied.");
+        return;
+      }
+      print("read/write access granted. 😀");
+    }
+    print("Write beautiful bytes. ✨");
+  } on AbortError {
+    print("User dismissed dialog or picked a file deemed too sensitive or dangerous.");
+  }
+}
+```
+
+> Note that current implementation of the File System Access API does not remember permissions across browser's sessions
+> when used with IndexedDB.
+> Star [crbug.com/1011533](https://crbug.com/1011533) to be notified of work on persisting granted permissions.
+
+### More
+
+See examples in `example/` folder to play with fun tools.
 
 ## Missing features
 
@@ -29,7 +170,7 @@ There is no wrapper around this JavaScript feature for now.
 
 ## Known issues
 
-You cannot store a FileSystemHandle into IndexedDB for now.
+- You cannot store a FileSystemHandle into IndexedDB for now. See [issue #50621].
 
 File any potential [issues] you see.
 
@@ -47,14 +188,15 @@ This library includes documentation copied and/or modified from [W3C WICG’s Fi
 under the [W3C Software and Document License]. 
 
 This library includes documentation copied and/or modified from [MDN Web Doc’s File System Access], by 
-[Mozilla Contributors] which is available under the [CC-BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/).
+[Mozilla Contributors] which is available under the [CC-BY-SA 2.5].
 
-This library is available under MIT license.
+This library is available under [MIT license].
 
 <!-- Table of Links -->
 [Chrome, Edge and Opera browsers]: https://developer.mozilla.org/docs/Web/API/File_System_Access_API#browser_compatibility
 [Drag and Drop]: https://developer.mozilla.org/docs/Web/API/DataTransferItem/getAsFileSystemHandle
 [Synchronous access in Web Workers]: https://fs.spec.whatwg.org/#api-filesystemfilehandle-createsyncaccesshandle
+[issue #50621]:(https://github.com/dart-lang/sdk/issues/50621)
 
 [issues]: https://github.com/poirierlouis/file_system_access_api/issues
 [pull-requests]: https://github.com/poirierlouis/file_system_access_api/pulls
@@ -67,3 +209,5 @@ This library is available under MIT license.
 
 [W3C Software and Document License]: https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
 [Mozilla Contributors]: https://developer.mozilla.org/docs/Web/API/File_System_Access_API/contributors.txt
+[CC-BY-SA 2.5]:(https://creativecommons.org/licenses/by-sa/2.5/)
+[MIT license]:(https://github.com/poirierlouis/file_system_access_api/blob/master/LICENSE)
