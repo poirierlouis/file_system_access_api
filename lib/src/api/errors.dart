@@ -17,3 +17,6 @@ class InvalidModificationError {}
 
 /// Thrown if file doesn't exist and the create option is set to [false].
 class NotFoundError {}
+
+/// Thrown if a file / directory picker is shown without prior user gesture (e.g. click event).
+class SecurityError {}

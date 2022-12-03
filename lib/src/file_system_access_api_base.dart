@@ -36,6 +36,7 @@ extension WindowFileSystemAccess on Window {
   ///
   /// Throws an [AbortError] if a user dismisses the prompt without making a selection or if a file selected is deemed
   /// too sensitive or dangerous to be exposed to the website.
+  /// Throws a [SecurityError] if method is called without prior user gesture (e.g. click event).
   Future<List<FileSystemFileHandle>> showOpenFilePicker({
     bool multiple = false,
     List<FilePickerAcceptType> types = const [],
@@ -63,6 +64,8 @@ extension WindowFileSystemAccess on Window {
     } catch (error) {
       if (jsIsNativeError(error, "AbortError")) {
         throw AbortError();
+      } else if (jsIsNativeError(error, "SecurityError")) {
+        throw SecurityError();
       } else {
         rethrow;
       }
@@ -89,6 +92,7 @@ extension WindowFileSystemAccess on Window {
   ///
   /// Throws an [AbortError] if a user dismisses the prompt without making a selection or if a file selected is deemed
   /// too sensitive or dangerous to be exposed to the website.
+  /// Throws a [SecurityError] if method is called without prior user gesture (e.g. click event).
   Future<FileSystemFileHandle> showSaveFilePicker({
     String? suggestedName,
     List<FilePickerAcceptType> types = const [],
@@ -118,6 +122,8 @@ extension WindowFileSystemAccess on Window {
     } catch (error) {
       if (jsIsNativeError(error, "AbortError")) {
         throw AbortError();
+      } else if (jsIsNativeError(error, "SecurityError")) {
+        throw SecurityError();
       } else {
         rethrow;
       }
@@ -140,6 +146,7 @@ extension WindowFileSystemAccess on Window {
   ///
   /// Throws an [AbortError] if a user dismisses the prompt without making a selection or if the selected content is
   /// deemed too sensitive or dangerous to be exposed to the website.
+  /// Throws a [SecurityError] if method is called without prior user gesture (e.g. click event).
   Future<FileSystemDirectoryHandle> showDirectoryPicker({
     String? id,
     dynamic startIn,
@@ -163,6 +170,8 @@ extension WindowFileSystemAccess on Window {
     } catch (error) {
       if (jsIsNativeError(error, "AbortError")) {
         throw AbortError();
+      } else if (jsIsNativeError(error, "SecurityError")) {
+        throw SecurityError();
       } else {
         rethrow;
       }
