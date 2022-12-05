@@ -212,5 +212,5 @@ This library is available under [MIT license].
 
 [W3C Software and Document License]: https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
 [Mozilla Contributors]: https://developer.mozilla.org/docs/Web/API/File_System_Access_API/contributors.txt
-[CC-BY-SA 2.5]:(https://creativecommons.org/licenses/by-sa/2.5/)
-[MIT license]:(https://github.com/poirierlouis/file_system_access_api/blob/master/LICENSE)
+[CC-BY-SA 2.5]: https://creativecommons.org/licenses/by-sa/2.5/
+[MIT license]: https://github.com/poirierlouis/file_system_access_api/blob/master/LICENSE
