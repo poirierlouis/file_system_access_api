@@ -41,13 +41,17 @@ class View {
   TextEditorTab textEditor = TextEditorTab();
   TreeViewerTab treeViewer = TreeViewerTab();
 
-  void selectTab(String name) {
+  void selectTab(String name, [bool withUserGesture = true]) {
     $tabPerName[tab]!.hide();
     $btnTabPerName[tab]!.className = "";
 
     $tabPerName[name]!.show();
     $btnTabPerName[name]!.className = "active";
     tab = name;
+
+    if (name == "tree" && withUserGesture) {
+      treeViewer.load();
+    }
   }
 
   Future<void> init(LightStorage db) async {

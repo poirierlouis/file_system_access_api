@@ -16,20 +16,32 @@ class TreeViewerTab {
   DivElement get $cardError => $view.querySelector("div#error") as DivElement;
 
   LightStorage? _storage;
+  FileSystemDirectoryHandle? _directory;
 
   Future<void> init(LightStorage storage) async {
     _storage = storage;
 
     $btnOpenDirectory.onClick.listen(openDirectoryPicker);
     $btnClearRecent.onClick.listen(clearRecent);
+  }
 
-    final handle = storage["tree-recent"];
-    final directory = window.fromStorage(handle);
-
-    if (directory == null || directory is! FileSystemDirectoryHandle) {
+  Future<void> load() async {
+    if (_directory != null) {
       return;
     }
-    await showTree(directory);
+    final handle = await _storage!.get("tree-recent");
+    final directory = FileSystemAccess.fromStorage(handle);
+
+    if (directory is! FileSystemDirectoryHandle) {
+      return;
+    }
+    _directory = directory;
+    final isGranted = await verifyPermission(_directory!);
+
+    if (!isGranted) {
+      return;
+    }
+    await showTree(_directory!);
   }
 
   Future<void> openDirectoryPicker(event) async {

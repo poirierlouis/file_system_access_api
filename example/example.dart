@@ -18,7 +18,7 @@ extension HtmlElementState on HtmlElement {
 final view = View();
 
 void main() async {
-  if (!window.fileSystemAccess || !LightStorage.supported) {
+  if (!FileSystemAccess.supported || !LightStorage.supported) {
     view.$unsupported.show();
     return;
   }
@@ -42,5 +42,16 @@ void redirectTab() {
   }
   final tab = url.substring(url.lastIndexOf("#") + 1);
 
-  view.selectTab(tab);
+  view.selectTab(tab, false);
+}
+
+/// Return true when permission is granted on [handle] with [mode] access, false otherwise.
+Future<bool> verifyPermission(FileSystemHandle handle, {PermissionMode mode = PermissionMode.read}) async {
+  var permission = await handle.queryPermission(mode: mode);
+
+  if (permission == PermissionState.granted) {
+    return true;
+  }
+  permission = await handle.requestPermission(mode: mode);
+  return permission == PermissionState.granted;
 }
