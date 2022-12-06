@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:html';
 
 import 'package:file_system_access_api/file_system_access_api.dart';
@@ -10,13 +11,6 @@ import 'package:file_system_access_api/src/wrapper/file_system_handle.dart' as w
 import 'package:js/js_util.dart' as js;
 
 extension WindowFileSystemAccess on Window {
-  /// Checks if the File System Access API is supported on the current browser.
-  bool get fileSystemAccess {
-    return js.hasProperty(window, "showOpenFilePicker") &&
-        js.hasProperty(window, "showSaveFilePicker") &&
-        js.hasProperty(window, "showDirectoryPicker");
-  }
-
   /// Shows a file picker that allows a user to select a file or multiple files and returns a handle for the file(s).
   /// The user has to interact with the page or a UI element in order for this feature to work.
   ///
@@ -178,22 +172,6 @@ extension WindowFileSystemAccess on Window {
     }
   }
 
-  FileSystemHandle? fromStorage(dynamic handle) {
-    if (handle == null) {
-      return null;
-    }
-    if (!js.instanceOfString(handle, "FileSystemFileHandle") &&
-        !js.instanceOfString(handle, "FileSystemDirectoryHandle")) {
-      return null;
-    }
-    if (handle.kind == "file") {
-      return wrapper0.FileSystemFileHandle(handle);
-    } else if (handle.kind == "directory") {
-      return wrapper1.FileSystemDirectoryHandle(handle);
-    }
-    return null;
-  }
-
   /// Converts [FilePickerAcceptType] from Dart type to JS equivalent using interoperability.
   static List<interop0.FilePickerAcceptType> _toInteropAcceptType(final List<FilePickerAcceptType> types) {
     return types
@@ -226,5 +204,30 @@ extension WindowFileSystemAccess on Window {
       startIn = startIn.name;
     }
     return [id, startIn];
+  }
+}
+
+/// Helpers to bind native JavaScript objects with Dart objects of this library.
+class FileSystemAccess {
+  /// Checks to see if File System Access API is supported on the current browser.
+  static bool get supported {
+    return js.hasProperty(window, "showOpenFilePicker") &&
+        js.hasProperty(window, "showSaveFilePicker") &&
+        js.hasProperty(window, "showDirectoryPicker");
+  }
+
+  /// Convert [handle] from IndexedDB storage as a [FileSystemFileHandle] / [FileSystemDirectoryHandle].
+  ///
+  /// Returns null when [handle] is null or is not a [FileSystemHandle].
+  static FileSystemHandle? fromStorage(dynamic handle) {
+    if (handle == null || handle == undefined) {
+      return null;
+    }
+    if (js.instanceOfString(handle, "FileSystemFileHandle")) {
+      return wrapper0.FileSystemFileHandle(handle);
+    } else if (js.instanceOfString(handle, "FileSystemDirectoryHandle")) {
+      return wrapper1.FileSystemDirectoryHandle(handle);
+    }
+    return null;
   }
 }
