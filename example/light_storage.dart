@@ -1,5 +1,21 @@
+import 'dart:async';
 import 'dart:html';
 import 'dart:indexed_db';
+
+import 'package:js/js.dart';
+
+/// Workaround to serialize/deserialize native JavaScript object in IndexedDB.
+/// It will serialize native JavaScript object and Dart symbols.
+///
+/// See [issue #50621](https://github.com/dart-lang/sdk/issues/50621)
+@JS()
+@staticInterop
+class LightObjectStore {}
+
+extension on LightObjectStore {
+  external Request get(key);
+  external Request put(value, key);
+}
 
 /// Light database layer implementation of IndexedDB to store [FileSystemHandle].
 class LightStorage {
@@ -16,22 +32,33 @@ class LightStorage {
     if (_db == null) {
       return;
     }
-    await _loadDatabase();
   }
 
   bool containsKey(String key) => _data.containsKey(key);
 
   dynamic operator [](String key) => _data[key];
 
+  Future<dynamic> get(String key) async {
+    if (_data.containsKey(key)) {
+      return _data[key];
+    }
+    final twx = _db!.transaction(storeName, "readonly");
+    final store = twx.objectStore(storeName) as LightObjectStore;
+    final request = store.get(key);
+    final value = await _completeRequest(request);
+
+    _data[key] = value;
+    return value;
+  }
+
   Future<dynamic> set(String key, dynamic value) async {
     final twx = _db!.transaction(storeName, "readwrite");
-    final store = twx.objectStore(storeName);
+    final store = twx.objectStore(storeName) as LightObjectStore;
+    final request = store.put(value, key);
+    final result = await _completeRequest(request);
 
-    store.put(value, key);
-    return twx.completed.then((_) {
-      _data[key] = value;
-      return value;
-    });
+    _data[key] = value;
+    return result;
   }
 
   Future<void> clear() async {
@@ -42,22 +69,25 @@ class LightStorage {
     return twx.completed.then((_) => _data.clear());
   }
 
-  Future<int> _loadDatabase() async {
-    final trx = _db!.transaction(storeName, "readonly");
-    final store = trx.objectStore(storeName);
-    final cursors = store.openCursor(autoAdvance: true).asBroadcastStream();
-
-    cursors.listen((cursor) {
-      _data[cursor.key as String] = cursor.value;
-    });
-    return cursors.length.then((_) => _data.length);
-  }
-
   Future<void> _init(VersionChangeEvent event) async {
     _db = event.target.result;
     if (_db == null) {
       return;
     }
     _db!.createObjectStore(storeName, autoIncrement: true);
+  }
+
+  Future<T> _completeRequest<T>(Request request) {
+    final completer = Completer<T>.sync();
+
+    request.onSuccess.listen((e) {
+      T result = request.result;
+
+      completer.complete(result);
+    });
+    request.onError.listen((e) {
+      return completer.completeError(e);
+    });
+    return completer.future;
   }
 }
