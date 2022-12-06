@@ -173,7 +173,8 @@ There is no wrapper around this JavaScript feature for now.
 
 ## Known issues
 
-- You cannot store a FileSystemHandle into IndexedDB for now. See [issue #50621].
+- You cannot store a FileSystemHandle into IndexedDB as-this. See [issue #50621] for more. A workaround is implemented 
+in `LightStorage` within `example/` folder.
 
 File any potential [issues] you see.
 
