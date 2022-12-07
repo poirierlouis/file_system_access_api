@@ -35,7 +35,7 @@ class FileSystemHandle implements api0.FileSystemHandle {
   }
 
   @override
-  dynamic toStorage() {
+  dynamic toNative() {
     return handle;
   }
 }

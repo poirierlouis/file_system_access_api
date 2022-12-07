@@ -50,7 +50,7 @@ class TreeViewerTab {
       final directory = await window.showDirectoryPicker(mode: PermissionMode.read);
 
       await showTree(directory);
-      await _storage!.set("tree-recent", directory.toStorage());
+      await _storage!.set("tree-recent", directory.toNative());
     } on AbortError {
       $cardError.show();
     } catch (error) {

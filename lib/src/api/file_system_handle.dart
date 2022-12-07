@@ -34,7 +34,7 @@ abstract class FileSystemHandle {
 
   /// Returns underlying JavaScript object to store handle in IndexedDB.
   ///
-  /// **Note:** this feature is not working. See this [issue](https://github.com/dart-lang/sdk/issues/50621) to follow
-  /// up.
-  dynamic toStorage();
+  /// **Note:** this feature is not working as-this. See this
+  /// [issue #50621](https://github.com/dart-lang/sdk/issues/50621) and in `example/` folder for a workaround.
+  dynamic toNative();
 }
