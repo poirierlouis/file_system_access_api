@@ -28,7 +28,7 @@ Object mapToJsObject(Map<dynamic, dynamic> a) {
   return obj;
 }
 
-/// Rethrows a Dart typed error based on a JavaScript error message.
+/// Returns true when DomException [error] is an unwrapped JavaScript error instance of [type], false otherwise.
 ///
 /// e.g. AbortError in JavaScript will unwrap to a [DomException] with name "AbortError".
 ///
@@ -43,24 +43,24 @@ Object mapToJsObject(Map<dynamic, dynamic> a) {
 ///   }
 /// }
 /// ```
-bool jsIsNativeError(Object? object, String expectedType) {
-  if (object is DomException) {
-    return object.name == expectedType;
+bool jsIsNativeError(Object? error, String type) {
+  if (error is DomException) {
+    return error.name == type;
   }
-  if (object is! String) {
+  if (error is! String) {
     return false;
   }
-  return object.contains(expectedType);
+  return error.contains(type);
 }
 
 /// Convert a JavaScript asynchronous [iterator] into a Dart [Stream].
 Stream<T> jsAsyncIterator<T>(iterator) async* {
   while (true) {
-    final next = await promiseToFuture(callMethod(iterator, 'next', []));
+    final next = await promiseToFuture(callMethod(iterator, "next", []));
 
-    if (getProperty(next, 'done')) {
+    if (getProperty(next, "done")) {
       break;
     }
-    yield getProperty(next, 'value');
+    yield getProperty(next, "value");
   }
 }
