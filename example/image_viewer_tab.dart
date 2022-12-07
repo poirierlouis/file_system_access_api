@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:html';
 import 'dart:typed_data';
@@ -8,10 +9,51 @@ class ImageViewerTab {
   HtmlElement get $view => querySelector("#viewer") as HtmlElement;
 
   ButtonElement get $btnOpenImage => $view.querySelector("button") as ButtonElement;
+  DivElement get $dndContainer => $view.querySelector("#drag-n-drop") as DivElement;
   ImageElement get $img => $view.querySelector("img") as ImageElement;
 
   Future<void> init() async {
     $btnOpenImage.onClick.listen(openImagePicker);
+    listenDragAndDrop();
+  }
+
+  void listenDragAndDrop() {
+    $view.addEventListener("dragover", (event) => event.preventDefault());
+    $view.addEventListener("drop", (event) async {
+      event.preventDefault();
+
+      var handles = await FileSystemAccess.fromDropEvent(event);
+
+      handles = handles
+          .where((handle) =>
+              handle.kind == "file" &&
+              (handle.name.endsWith(".png") || handle.name.endsWith(".webp") || handle.name.endsWith(".jpg")))
+          .toList(growable: false);
+      if (handles.isEmpty) {
+        print("Found no image file.");
+        return;
+      }
+      if (handles.length > 1) {
+        print("Opening only first image file out of ${handles.length}.");
+      }
+      await onImageDropped(handles.first);
+    });
+  }
+
+  Future<void> onImageDropped(FileSystemHandle handle) async {
+    if (handle is! FileSystemFileHandle) {
+      return;
+    }
+    final file = await handle.getFile();
+    final isImage = file.type.startsWith("image/");
+
+    if (!isImage) {
+      print("File is not an image: ${handle.name}");
+      return;
+    }
+    final image = await loadImageAsBase64(file);
+
+    showImage(image);
   }
 
   Future<void> openImagePicker(event) async {
