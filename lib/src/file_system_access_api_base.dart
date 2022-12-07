@@ -216,10 +216,11 @@ class FileSystemAccess {
         js.hasProperty(window, "showDirectoryPicker");
   }
 
-  /// Convert [handle] from IndexedDB storage as a [FileSystemFileHandle] / [FileSystemDirectoryHandle].
+  /// Convert [handle] from native JavaScript object as a [FileSystemFileHandle] / [FileSystemDirectoryHandle].
+  /// It can be an instance from [IndexedDB], a [DataTransferItem.getAsFileSystemHandle]...
   ///
   /// Returns null when [handle] is null or is not a [FileSystemHandle].
-  static FileSystemHandle? fromStorage(dynamic handle) {
+  static FileSystemHandle? fromNative(dynamic handle) {
     if (handle == null || handle == undefined) {
       return null;
     }
@@ -257,7 +258,7 @@ class FileSystemAccess {
         .asyncMap((promise) async {
           final interop = await promise;
 
-          return FileSystemAccess.fromStorage(interop);
+          return FileSystemAccess.fromNative(interop);
         })
         .where((handle) => handle != null)
         .cast<FileSystemHandle>()

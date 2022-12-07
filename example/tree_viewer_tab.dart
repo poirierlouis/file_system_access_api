@@ -30,7 +30,7 @@ class TreeViewerTab {
       return;
     }
     final handle = await _storage!.get("tree-recent");
-    final directory = FileSystemAccess.fromStorage(handle);
+    final directory = FileSystemAccess.fromNative(handle);
 
     if (directory is! FileSystemDirectoryHandle) {
       return;
