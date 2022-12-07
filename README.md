@@ -159,14 +159,34 @@ void main() async {
 > when used with IndexedDB.
 > Star [crbug.com/1011533](https://crbug.com/1011533) to be notified of work on persisting granted permissions.
 
+### Drag and Drop
+You can get files/directories from a drag-n-drop event:
+```dart
+import 'dart:html';
+
+import 'package:file_system_access_api/file_system_access_api.dart';
+
+void main() {
+  final $area = document.querySelector("#area") as DivElement;
+  
+  $area.addEventListener("dragover", (event) => event.preventDefault());
+  $area.addEventListener("drop", (event) async {
+    event.preventDefault();
+    
+    final handles = await FileSystemAccess.fromDropEvent(event);
+    
+    for (final handle in handles) {
+      print("<${handle.kind} name='${handle.name}' />");
+    }
+  });
+}
+```
+
 ### More
 
 See examples in `example/` folder to play with fun tools.
 
 ## Missing features
-
-### [Drag and Drop]
-There is no wrapper around this JavaScript feature for now.
 
 ### [Synchronous access in Web Workers]
 There is no wrapper around this JavaScript feature for now.
@@ -198,7 +218,6 @@ This library is available under [MIT license].
 
 <!-- Table of Links -->
 [Chrome, Edge and Opera browsers]: https://developer.mozilla.org/docs/Web/API/File_System_Access_API#browser_compatibility
-[Drag and Drop]: https://developer.mozilla.org/docs/Web/API/DataTransferItem/getAsFileSystemHandle
 [Synchronous access in Web Workers]: https://fs.spec.whatwg.org/#api-filesystemfilehandle-createsyncaccesshandle
 [issue #50621]: https://github.com/dart-lang/sdk/issues/50621
 
