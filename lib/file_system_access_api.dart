@@ -108,4 +108,6 @@ export 'src/api/file_system_file_handle.dart';
 export 'src/api/file_system_handle.dart';
 export 'src/api/permissions.dart';
 export 'src/api/well_known_directory.dart';
-export 'src/file_system_access_api_base.dart';
+export 'src/file_system_access_base.dart';
+export 'src/file_system_access_extension.dart';
+export 'src/storage_manager_extension.dart';
