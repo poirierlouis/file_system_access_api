@@ -207,6 +207,28 @@ extension WindowFileSystemAccess on Window {
   }
 }
 
+extension StorageManagerOriginPrivateFileSystem on StorageManager {
+  /// Returns the root directory of the origin private file system. Creates root directory when it does not exist. Root
+  /// directory shall always return [PermissionState.granted] on query and request access.
+  ///
+  /// Throws a [SecurityError] if method is called outside of a safe file system environment.
+  ///
+  /// See specification on [WHATWG's File System](https://fs.spec.whatwg.org/#sandboxed-filesystem)
+  Future<FileSystemDirectoryHandle> getDirectory() async {
+    try {
+      final handle = await js.promiseToFuture(js.callMethod(this, "getDirectory", []));
+
+      return wrapper1.FileSystemDirectoryHandle(handle);
+    } catch (error) {
+      if (jsIsNativeError(error, "SecurityError")) {
+        throw SecurityError();
+      } else {
+        rethrow;
+      }
+    }
+  }
+}
+
 /// Helpers to bind native JavaScript objects with Dart objects of this library.
 class FileSystemAccess {
   /// Checks to see if File System Access API is supported on the current browser.

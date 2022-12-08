@@ -190,6 +190,12 @@ See examples in `example/` folder to play with fun tools.
 
 ### [Synchronous access in Web Workers]
 There is no wrapper around this JavaScript feature for now.
+> - FileSystemFileHandle.createSyncAccessHandle()
+
+### [Origin Private File System]
+There is no wrapper around these JavaScript features for now:
+> - FileSystemHandle.move()
+> - FileSystemHandle.remove()
 
 ## Known issues
 
@@ -218,7 +224,8 @@ This library is available under [MIT license].
 
 <!-- Table of Links -->
 [Chrome, Edge and Opera browsers]: https://developer.mozilla.org/docs/Web/API/File_System_Access_API#browser_compatibility
-[Synchronous access in Web Workers]: https://fs.spec.whatwg.org/#api-filesystemfilehandle-createsyncaccesshandle
+[Synchronous access in Web Workers]: https://developer.mozilla.org/docs/Web/API/FileSystemFileHandle/createSyncAccessHandle
+[Origin Private File System]: https://fs.spec.whatwg.org/#origin-private-file-system
 [issue #50621]: https://github.com/dart-lang/sdk/issues/50621
 
 [issues]: https://github.com/poirierlouis/file_system_access_api/issues
