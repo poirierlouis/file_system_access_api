@@ -38,14 +38,14 @@ class FileSystemDirectoryHandle extends wrapper1.FileSystemHandle implements api
   @override
   Future<api1.FileSystemFileHandle?> getFileHandle(String name, [bool create = false]) async {
     try {
-      dynamic dataRaw = await js.promiseToFuture(
+      dynamic handle = await js.promiseToFuture(
         _handle.getFileHandle(
           name,
           interop0.FileSystemGetFileOptions(create: create),
         ),
       );
 
-      return wrapper0.FileSystemFileHandle(dataRaw);
+      return wrapper0.FileSystemFileHandle(handle);
     } catch (error) {
       if (jsIsNativeError(error, "NotAllowedError")) {
         throw NotAllowedError();
@@ -64,17 +64,17 @@ class FileSystemDirectoryHandle extends wrapper1.FileSystemHandle implements api
   @override
   Future<FileSystemDirectoryHandle?> getDirectoryHandle(String name, [bool create = false]) async {
     try {
-      dynamic dataRaw = await js.promiseToFuture(
+      dynamic handle = await js.promiseToFuture(
         _handle.getDirectoryHandle(
           name,
           interop0.FileSystemGetDirectoryOptions(create: create),
         ),
       );
 
-      if (dataRaw == null || dataRaw == undefined) {
+      if (handle == null || handle == undefined) {
         return null;
       }
-      return FileSystemDirectoryHandle(dataRaw);
+      return FileSystemDirectoryHandle(handle);
     } catch (error) {
       if (jsIsNativeError(error, "NotAllowedError")) {
         throw NotAllowedError();
