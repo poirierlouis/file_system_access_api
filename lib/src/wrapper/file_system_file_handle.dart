@@ -22,6 +22,8 @@ class FileSystemFileHandle extends wrapper0.FileSystemHandle implements api0.Fil
     } catch (error) {
       if (jsIsNativeError(error, "NotAllowedError")) {
         throw NotAllowedError();
+      } else if (jsIsNativeError(error, "NotFoundError")) {
+        throw NotFoundError();
       } else {
         rethrow;
       }
@@ -39,6 +41,8 @@ class FileSystemFileHandle extends wrapper0.FileSystemHandle implements api0.Fil
     } catch (error) {
       if (jsIsNativeError(error, "NotAllowedError")) {
         throw NotAllowedError();
+      } else if (jsIsNativeError(error, "NotFoundError")) {
+        throw NotFoundError();
       } else {
         rethrow;
       }

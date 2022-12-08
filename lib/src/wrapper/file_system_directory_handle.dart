@@ -17,14 +17,22 @@ class FileSystemDirectoryHandle extends wrapper1.FileSystemHandle implements api
 
   @override
   Stream<api2.FileSystemHandle> get values {
-    final iterator = js.callMethod(_handle, "values", []);
+    try {
+      final iterator = js.callMethod(_handle, "values", []);
 
-    return jsAsyncIterator<interop2.FileSystemHandle>(iterator).map((handleInterop) {
-      if (handleInterop.kind == "directory") {
-        return FileSystemDirectoryHandle(handleInterop as interop0.FileSystemDirectoryHandle);
+      return jsAsyncIterator<interop2.FileSystemHandle>(iterator).map((handleInterop) {
+        if (handleInterop.kind == "directory") {
+          return FileSystemDirectoryHandle(handleInterop as interop0.FileSystemDirectoryHandle);
+        }
+        return wrapper0.FileSystemFileHandle(handleInterop as interop1.FileSystemFileHandle);
+      });
+    } catch (error) {
+      if (jsIsNativeError(error, "NotFoundError")) {
+        throw NotFoundError();
+      } else {
+        rethrow;
       }
-      return wrapper0.FileSystemFileHandle(handleInterop as interop1.FileSystemFileHandle);
-    });
+    }
   }
 
   @override
@@ -101,13 +109,21 @@ class FileSystemDirectoryHandle extends wrapper1.FileSystemHandle implements api
 
   @override
   Future<List<String>?> resolve(api2.FileSystemHandle possibleDescendant) async {
-    List<dynamic>? dataRaw = await js.promiseToFuture(
-      _handle.resolve((possibleDescendant as wrapper1.FileSystemHandle).handle),
-    );
+    try {
+      List<dynamic>? paths = await js.promiseToFuture(
+        _handle.resolve((possibleDescendant as wrapper1.FileSystemHandle).handle),
+      );
 
-    if (dataRaw == null || dataRaw == undefined) {
-      return null;
+      if (paths == null || paths == undefined) {
+        return null;
+      }
+      return List.castFrom(paths);
+    } catch (error) {
+      if (jsIsNativeError(error, "NotFoundError")) {
+        throw NotFoundError();
+      } else {
+        rethrow;
+      }
     }
-    return List.castFrom(dataRaw);
   }
 }

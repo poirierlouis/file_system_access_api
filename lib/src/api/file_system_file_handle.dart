@@ -19,6 +19,7 @@ abstract class FileSystemFileHandle implements FileSystemHandle {
   /// no longer readable.
   ///
   /// Throws a [NotAllowedError] if the state for the handle is not [PermissionState.granted] in read mode.
+  /// Throws a [NotFoundError] if this requested file could not be found at the time operation was processed.
   Future<html.File> getFile();
 
   /// Returns a [Future] which resolves to a newly created [FileSystemWritableFileStream] object that can be used to
@@ -32,6 +33,7 @@ abstract class FileSystemFileHandle implements FileSystemHandle {
   /// represented by file handle with the temporary file when the writable filestream is closed.
   ///
   /// Throws a [NotAllowedError] if the state for the handle is not [PermissionState.granted] in readwrite mode.
+  /// Throws a [NotFoundError] if this requested file could not be found at the time operation was processed.
   Future<FileSystemWritableFileStream> createWritable({bool keepExistingData = false});
 }
 
