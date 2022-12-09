@@ -81,11 +81,15 @@ class TextEditorTab {
     if (!permission) {
       return;
     }
-    final stream = await handle!.createWritable();
-    final data = $textarea.value ?? "";
+    try {
+      final stream = await handle!.createWritable();
+      final data = $textarea.value ?? "";
 
-    await stream.writeAsText(data);
-    await stream.close();
+      await stream.writeAsText(data);
+      await stream.close();
+    } on NotFoundError {
+      print("The file was not found when writing data. File has been either moved or deleted.");
+    }
   }
 
   Future<String> loadFile(File file) async {

@@ -38,12 +38,19 @@ class TreeViewerTab {
       return;
     }
     _directory = directory;
-    final isGranted = await verifyPermission(_directory!);
+    try {
+      final isGranted = await verifyPermission(_directory!);
 
-    if (!isGranted) {
-      return;
+      if (!isGranted) {
+        return;
+      }
+      await showTree(_directory!);
+    } on NotFoundError {
+      await _storage!.set("tree-recent", null);
+      _loading(false);
+      print("The last directory was not found when iterating on its files. "
+          "Directory has been either moved or deleted.");
     }
-    await showTree(_directory!);
   }
 
   Future<void> openDirectoryPicker(event) async {
