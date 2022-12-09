@@ -26,7 +26,7 @@ class ImageViewerTab {
 
       handles = handles
           .where((handle) =>
-              handle.kind == "file" &&
+              handle.kind == FileSystemKind.file &&
               (handle.name.endsWith(".png") || handle.name.endsWith(".webp") || handle.name.endsWith(".jpg")))
           .toList(growable: false);
       if (handles.isEmpty) {
