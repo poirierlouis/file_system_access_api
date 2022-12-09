@@ -26,17 +26,11 @@ abstract class FileSystemHandle {
   /// can be done. If this returns [denied] any operations will reject. Usually handles returned by the local file
   /// system handle factories will initially return [granted] for their read permission state. However, other than
   /// through the user revoking permission, a handle retrieved from IndexedDB is also likely to return [prompt].
-  ///
-  /// Throws a [NotFoundError] if this requested file or directory could not be found at the time operation was
-  /// processed.
   Future<PermissionState> queryPermission({required PermissionMode mode});
 
   /// Requests [read] or [readwrite] permissions for the file handle.
   ///
   /// Returns a [PermissionState] value which is one of [granted], [denied] or [prompt].
-  ///
-  /// Throws a [NotFoundError] if this requested file or directory could not be found at the time operation was
-  /// processed.
   Future<PermissionState> requestPermission({required PermissionMode mode});
 
   /// Returns underlying JavaScript object to store handle in IndexedDB.

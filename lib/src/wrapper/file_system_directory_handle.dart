@@ -17,22 +17,20 @@ class FileSystemDirectoryHandle extends wrapper1.FileSystemHandle implements api
 
   @override
   Stream<api2.FileSystemHandle> get values {
-    try {
-      final iterator = js.callMethod(_handle, "values", []);
+    final iterator = js.callMethod(_handle, "values", []);
 
-      return jsAsyncIterator<interop2.FileSystemHandle>(iterator).map((handleInterop) {
-        if (handleInterop.kind == "directory") {
-          return FileSystemDirectoryHandle(handleInterop as interop0.FileSystemDirectoryHandle);
-        }
-        return wrapper0.FileSystemFileHandle(handleInterop as interop1.FileSystemFileHandle);
-      });
-    } catch (error) {
+    return jsAsyncIterator<interop2.FileSystemHandle>(iterator).map((handleInterop) {
+      if (handleInterop.kind == "directory") {
+        return FileSystemDirectoryHandle(handleInterop as interop0.FileSystemDirectoryHandle);
+      }
+      return wrapper0.FileSystemFileHandle(handleInterop as interop1.FileSystemFileHandle);
+    }).handleError((error) {
       if (jsIsNativeError(error, "NotFoundError")) {
         throw NotFoundError();
       } else {
-        rethrow;
+        throw error;
       }
-    }
+    });
   }
 
   @override
