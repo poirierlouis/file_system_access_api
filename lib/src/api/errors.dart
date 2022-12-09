@@ -9,13 +9,14 @@ class NotAllowedError {}
 class MalformedNameError {}
 
 /// Thrown if the named entry is a directory and not a file when using [FileSystemDirectoryHandle.getFileHandle].
-/// Throw if the named entry is a file and not a directory when using [FileSystemDirectoryHandle.getDirectoryHandle].
+/// Thrown if the named entry is a file and not a directory when using [FileSystemDirectoryHandle.getDirectoryHandle].
 class TypeMismatchError {}
 
 /// Thrown if [recursive] is set to [false] and the entry to be removed has children.
 class InvalidModificationError {}
 
-/// Thrown if file doesn't exist and the create option is set to [false].
+/// Thrown if file doesn't exist and the create option is set to [false] or the requested file / directory could not be
+/// found at the time an operation call was processed.
 class NotFoundError {}
 
 /// Thrown if a file / directory picker is shown without prior user gesture (e.g. click event).
