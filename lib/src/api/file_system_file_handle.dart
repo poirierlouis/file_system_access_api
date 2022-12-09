@@ -50,7 +50,7 @@ abstract class FileSystemFileHandle implements FileSystemHandle {
   /// Throws a [NotFoundError] if this requested file could not be found at the time operation was processed.
   ///
   /// **Note:** implemented only for source/destination handles within Origin Private File System, for now.
-  Future<void> move(FileSystemDirectoryHandle directory, [String? name]);
+  Future<void> move(FileSystemDirectoryHandle directory, {String? name});
 }
 
 /// A [WritableStream] object with additional convenience methods, which operates on a single file on disk. The

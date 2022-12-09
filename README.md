@@ -223,12 +223,12 @@ void main() async {
   FileSystemDirectoryHandle root;
   
   FileSystemFileHandle handle = await root.getFileHandle("some-name.txt");
-  FileSystemDirectoryHandle destination = await root.getDirectoryHandle("config", true);
+  FileSystemDirectoryHandle destination = await root.getDirectoryHandle("config", create: true);
 
   // Move only
   await handle.move(destination);
   // Move and rename
-  await handle.move(destination, "new-name.txt");
+  await handle.move(destination, name: "new-name.txt");
 }
 ```
 

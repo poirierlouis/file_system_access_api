@@ -36,7 +36,7 @@ class FileSystemDirectoryHandle extends wrapper1.FileSystemHandle implements api
   }
 
   @override
-  Future<api1.FileSystemFileHandle?> getFileHandle(String name, [bool create = false]) async {
+  Future<api1.FileSystemFileHandle?> getFileHandle(String name, {bool create = false}) async {
     try {
       dynamic handle = await js.promiseToFuture(
         _handle.getFileHandle(
@@ -62,7 +62,7 @@ class FileSystemDirectoryHandle extends wrapper1.FileSystemHandle implements api
   }
 
   @override
-  Future<FileSystemDirectoryHandle?> getDirectoryHandle(String name, [bool create = false]) async {
+  Future<FileSystemDirectoryHandle?> getDirectoryHandle(String name, {bool create = false}) async {
     try {
       dynamic handle = await js.promiseToFuture(
         _handle.getDirectoryHandle(
@@ -89,7 +89,7 @@ class FileSystemDirectoryHandle extends wrapper1.FileSystemHandle implements api
   }
 
   @override
-  Future<void> removeEntry(String name, [bool recursive = false]) {
+  Future<void> removeEntry(String name, {bool recursive = false}) {
     try {
       return js.promiseToFuture(_handle.removeEntry(name, interop0.FileSystemRemoveOptions(recursive: recursive)));
     } catch (error) {

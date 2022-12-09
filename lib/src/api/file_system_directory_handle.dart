@@ -38,7 +38,7 @@ abstract class FileSystemDirectoryHandle implements FileSystemHandle {
   /// Throws a [TypeMismatchError] if the named entry is a directory and not a file.
   /// Throws a [NotFoundError] if file doesn't exist and the create option is set to [false] or this requested directory
   /// could not be found at the time operation was processed.
-  Future<FileSystemFileHandle?> getFileHandle(String name, [bool create = false]);
+  Future<FileSystemFileHandle?> getFileHandle(String name, {bool create = false});
 
   /// Returns a [Future] fulfilled with a [FileSystemDirectoryHandle] for a subdirectory with the specified [name],
   /// within [this] directory.
@@ -52,7 +52,7 @@ abstract class FileSystemDirectoryHandle implements FileSystemHandle {
   /// Throws a [TypeMismatchError] if the returned entry is a file and not a directory.
   /// Throws a [NotFoundError] if directory doesn't exist and the create option is set to [false] or this requested
   /// directory could not be found at the time operation was processed.
-  Future<FileSystemDirectoryHandle?> getDirectoryHandle(String name, [bool create = false]);
+  Future<FileSystemDirectoryHandle?> getDirectoryHandle(String name, {bool create = false});
 
   /// Attempts to asynchronously remove an entry if the directory handle contains a file or directory called the [name]
   /// specified.
@@ -65,7 +65,7 @@ abstract class FileSystemDirectoryHandle implements FileSystemHandle {
   /// Throws an [InvalidModificationError] if [recursive] is set to [false] and the entry to be removed has children.
   /// Throws a [NotFoundError] if an entry name is not found or matched, or this requested directory could not be found
   /// at the time operation was processed.
-  Future<void> removeEntry(String name, [bool recursive = false]);
+  Future<void> removeEntry(String name, {bool recursive = false});
 
   /// Returns a [List] of directory names from the parent handle to the specified child entry, with the name of the
   /// child entry as the last array item or [null] if [possibleDescendant] is not a descendant of this
