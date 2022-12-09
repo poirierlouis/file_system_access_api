@@ -5,17 +5,26 @@ import 'dart:typed_data';
 
 import 'package:file_system_access_api/file_system_access_api.dart';
 
-class ImageViewerTab {
+import 'abstract_tab.dart';
+import 'light_storage.dart';
+
+class ImageViewerTab extends Tab {
+  ImageViewerTab(final LightStorage storage) : super(storage: storage, name: "viewer");
+
   HtmlElement get $view => querySelector("#viewer") as HtmlElement;
 
   ButtonElement get $btnOpenImage => $view.querySelector("button") as ButtonElement;
   DivElement get $dndContainer => $view.querySelector("#drag-n-drop") as DivElement;
   ImageElement get $img => $view.querySelector("img") as ImageElement;
 
+  @override
   Future<void> init() async {
     $btnOpenImage.onClick.listen(openImagePicker);
     listenDragAndDrop();
   }
+
+  @override
+  Future<void> load() async {}
 
   void listenDragAndDrop() {
     $view.addEventListener("dragover", (event) => event.preventDefault());

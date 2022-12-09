@@ -31,18 +31,7 @@ void main() async {
   await db.open();
   await view.init(db);
 
-  redirectTab();
-}
-
-void redirectTab() {
-  var url = window.location.href;
-
-  if (!url.contains("#")) {
-    return;
-  }
-  final tab = url.substring(url.lastIndexOf("#") + 1);
-
-  view.selectTab(tab, false);
+  view.redirectTab();
 }
 
 /// Return true when permission is granted on [handle] with [mode] access, false otherwise.

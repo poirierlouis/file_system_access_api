@@ -2,7 +2,12 @@ import 'dart:html';
 
 import 'package:file_system_access_api/file_system_access_api.dart';
 
-class TextEditorTab {
+import 'abstract_tab.dart';
+import 'light_storage.dart';
+
+class TextEditorTab extends Tab {
+  TextEditorTab(final LightStorage storage) : super(storage: storage, name: "editor");
+
   HtmlElement get $view => querySelector("#editor") as HtmlElement;
 
   ButtonElement get $btnNew => $view.querySelector("button#new") as ButtonElement;
@@ -27,11 +32,15 @@ class TextEditorTab {
     ),
   ];
 
+  @override
   Future<void> init() async {
     $btnNew.onClick.listen(newFile);
     $btnOpen.onClick.listen(selectFile);
     $btnSave.onClick.listen(saveFile);
   }
+
+  @override
+  Future<void> load() async {}
 
   void newFile(event) {
     $textarea.value = "";

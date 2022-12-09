@@ -2,11 +2,14 @@ import 'dart:html';
 
 import 'package:file_system_access_api/file_system_access_api.dart';
 
+import 'abstract_tab.dart';
 import 'example.dart';
 import 'light_storage.dart';
 import 'tree/view_directory_node.dart';
 
-class TreeViewerTab {
+class TreeViewerTab extends Tab {
+  TreeViewerTab(final LightStorage storage) : super(storage: storage, name: "tree");
+
   HtmlElement get $view => querySelector("#tree") as HtmlElement;
 
   ButtonElement get $btnOpenDirectory => $view.querySelector("button#open") as ButtonElement;
@@ -15,22 +18,21 @@ class TreeViewerTab {
   DivElement get $root => $view.querySelector("div#root") as DivElement;
   DivElement get $cardLoading => $view.querySelector("div#loading") as DivElement;
 
-  LightStorage? _storage;
   FileSystemDirectoryHandle? _directory;
   ViewDirectoryNode? _tree;
 
-  Future<void> init(LightStorage storage) async {
-    _storage = storage;
-
+  @override
+  Future<void> init() async {
     $btnOpenDirectory.onClick.listen(openDirectoryPicker);
     $btnClearRecent.onClick.listen(clearRecent);
   }
 
+  @override
   Future<void> load() async {
     if (_directory != null) {
       return;
     }
-    final handle = await _storage!.get("tree-recent");
+    final handle = await storage.get("tree-recent");
     final directory = FileSystemAccess.fromNative(handle);
 
     if (directory is! FileSystemDirectoryHandle) {
@@ -45,7 +47,7 @@ class TreeViewerTab {
       }
       await showTree(_directory!);
     } on NotFoundError {
-      await _storage!.set("tree-recent", null);
+      await storage.set("tree-recent", null);
       _loading(false);
       window.alert("The last directory was not found when iterating on its files. "
           "Directory has been either moved or deleted.");
@@ -57,7 +59,7 @@ class TreeViewerTab {
       final directory = await window.showDirectoryPicker(mode: PermissionMode.read);
 
       await showTree(directory);
-      await _storage!.set("tree-recent", directory.toNative());
+      await storage.set("tree-recent", directory.toNative());
     } on AbortError {
       window.alert("User dismissed dialog or picked a directory deemed too sensitive or dangerous.");
     } catch (error) {
@@ -66,7 +68,7 @@ class TreeViewerTab {
   }
 
   Future<void> clearRecent(event) async {
-    await _storage!.clear();
+    await storage.clear();
   }
 
   Future<void> showTree(FileSystemDirectoryHandle directory) async {
