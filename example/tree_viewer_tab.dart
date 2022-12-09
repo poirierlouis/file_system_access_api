@@ -14,7 +14,6 @@ class TreeViewerTab {
 
   DivElement get $root => $view.querySelector("div#root") as DivElement;
   DivElement get $cardLoading => $view.querySelector("div#loading") as DivElement;
-  DivElement get $cardError => $view.querySelector("div#error") as DivElement;
 
   LightStorage? _storage;
   FileSystemDirectoryHandle? _directory;
@@ -48,20 +47,19 @@ class TreeViewerTab {
     } on NotFoundError {
       await _storage!.set("tree-recent", null);
       _loading(false);
-      print("The last directory was not found when iterating on its files. "
+      window.alert("The last directory was not found when iterating on its files. "
           "Directory has been either moved or deleted.");
     }
   }
 
   Future<void> openDirectoryPicker(event) async {
-    $cardError.hide();
     try {
       final directory = await window.showDirectoryPicker(mode: PermissionMode.read);
 
       await showTree(directory);
       await _storage!.set("tree-recent", directory.toNative());
     } on AbortError {
-      $cardError.show();
+      window.alert("User dismissed dialog or picked a directory deemed too sensitive or dangerous.");
     } catch (error) {
       print(error);
     }

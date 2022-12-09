@@ -30,11 +30,11 @@ class ImageViewerTab {
               (handle.name.endsWith(".png") || handle.name.endsWith(".webp") || handle.name.endsWith(".jpg")))
           .toList(growable: false);
       if (handles.isEmpty) {
-        print("Found no image file.");
+        window.alert("Found no image file.");
         return;
       }
       if (handles.length > 1) {
-        print("Opening only first image file out of ${handles.length}.");
+        window.alert("Opening only first image file out of ${handles.length}.");
       }
       await onImageDropped(handles.first);
     });
@@ -48,7 +48,7 @@ class ImageViewerTab {
     final isImage = file.type.startsWith("image/");
 
     if (!isImage) {
-      print("File is not an image: ${handle.name}");
+      window.alert("File is not an image: ${handle.name}");
       return;
     }
     final image = await loadImageAsBase64(file);
@@ -72,7 +72,7 @@ class ImageViewerTab {
 
       showImage(image);
     } on AbortError {
-      print("User dismissed dialog or picked a file deemed too sensitive or dangerous.");
+      window.alert("User dismissed dialog or picked a file deemed too sensitive or dangerous.");
     } catch (error) {
       print(error);
     }

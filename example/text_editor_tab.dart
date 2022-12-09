@@ -44,7 +44,7 @@ class TextEditorTab {
 
       await openFile(handles.single);
     } on AbortError {
-      print("User dismissed dialog or picked a file deemed too sensitive or dangerous.");
+      window.alert("User dismissed dialog or picked a file deemed too sensitive or dangerous.");
     } catch (error) {
       print(error);
     }
@@ -69,7 +69,7 @@ class TextEditorTab {
           types: types,
         );
       } on AbortError {
-        print("User dismissed dialog or picked a file deemed too sensitive or dangerous.");
+        window.alert("User dismissed dialog or picked a file deemed too sensitive or dangerous.");
         return;
       } catch (error) {
         print(error);
@@ -88,7 +88,7 @@ class TextEditorTab {
       await stream.writeAsText(data);
       await stream.close();
     } on NotFoundError {
-      print("The file was not found when writing data. File has been either moved or deleted.");
+      window.alert("The file was not found when writing data. File has been either moved or deleted.");
     }
   }
 
