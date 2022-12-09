@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - js-interop bindings for `showOpenFilePicker`, `showSaveFilePicker` and `showDirectoryPicker` on Window.
 - js-interop bindings for File System Access API objects.
+- js-interop binding for Origin Private File System on Storage Manager object.
 - examples to demonstrate usage of this library.
 - Dart typed errors to replace vague DomException errors.
 - README.md of library with minimal documentation.
