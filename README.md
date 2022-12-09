@@ -186,6 +186,52 @@ void main() {
 
 See examples in `example/` folder to play with fun tools.
 
+## Origin Private File System
+
+This is a storage endpoint private to the origin of the page. It contains files/directories within a "virtual disk" 
+chosen by the browser implementing this API. Files and directories may be written in a database or any other data 
+structure. You should not expect to find those files/directories as-this on the hard disk.
+
+### Get root directory
+You can get a root directory of the origin private file system with:
+```dart
+void main() async {
+  FileSystemDirectoryHandle root = await window.navigator.storage?.getDirectory();
+}
+```
+
+### Rename a file
+> Applies only within Origin Private File System for now.
+
+You can rename a file with:
+```dart
+void main() async {
+  FileSystemDirectoryHandle root;
+
+  FileSystemFileHandle handle = await root.getFileHandle("some-name.txt");
+
+  await handle.rename("new-name.txt");
+}
+```
+
+### Move a file
+> Applies only within Origin Private File System for now.
+
+You can move a file inside another directory and optionally rename it in the same call with:
+```dart
+void main() async {
+  FileSystemDirectoryHandle root;
+  
+  FileSystemFileHandle handle = await root.getFileHandle("some-name.txt");
+  FileSystemDirectoryHandle destination = await root.getDirectoryHandle("config", true);
+
+  // Move only
+  await handle.move(destination);
+  // Move and rename
+  await handle.move(destination, "new-name.txt");
+}
+```
+
 ## Missing features
 
 ### [Synchronous access in Web Workers]

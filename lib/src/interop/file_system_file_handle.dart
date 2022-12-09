@@ -8,6 +8,7 @@ import 'package:js/js.dart';
 class FileSystemFileHandle extends FileSystemHandle {
   external Promise<html.File> getFile();
   external Promise<FileSystemWritableFileStream> createWritable([FileSystemCreateWritableOptions? options]);
+  external Promise<void> move(dynamic nameOrDirectory, [String? name]);
 }
 
 @JS()

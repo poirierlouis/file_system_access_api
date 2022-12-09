@@ -35,6 +35,22 @@ abstract class FileSystemFileHandle implements FileSystemHandle {
   /// Throws a [NotAllowedError] if the state for the handle is not [PermissionState.granted] in readwrite mode.
   /// Throws a [NotFoundError] if this requested file could not be found at the time operation was processed.
   Future<FileSystemWritableFileStream> createWritable({bool keepExistingData = false});
+
+  /// Rename file to [name].
+  ///
+  /// Throws a [NotAllowedError] if the state for the handle is not [PermissionState.granted] in readwrite mode.
+  /// Throws a [NotFoundError] if this requested file could not be found at the time operation was processed.
+  ///
+  /// **Note:** implemented only for file handles within Origin Private File System, for now.
+  Future<void> rename(String name);
+
+  /// Move file inside [directory], optionally renaming it to new [name].
+  ///
+  /// Throws a [NotAllowedError] if the state for the handle is not [PermissionState.granted] in readwrite mode.
+  /// Throws a [NotFoundError] if this requested file could not be found at the time operation was processed.
+  ///
+  /// **Note:** implemented only for source/destination handles within Origin Private File System, for now.
+  Future<void> move(FileSystemDirectoryHandle directory, [String? name]);
 }
 
 /// A [WritableStream] object with additional convenience methods, which operates on a single file on disk. The

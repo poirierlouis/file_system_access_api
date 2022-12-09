@@ -2,6 +2,7 @@ import 'dart:html' as html show File, Blob;
 import 'dart:typed_data';
 
 import 'package:file_system_access_api/src/api/errors.dart';
+import 'package:file_system_access_api/src/api/file_system_directory_handle.dart' as api1;
 import 'package:file_system_access_api/src/api/file_system_file_handle.dart' as api0;
 import 'package:file_system_access_api/src/interop/file_system_file_handle.dart' as interop0;
 import 'package:file_system_access_api/src/interop/interop_utils.dart';
@@ -38,6 +39,36 @@ class FileSystemFileHandle extends wrapper0.FileSystemHandle implements api0.Fil
       dynamic stream = await js.promiseToFuture(_handle.createWritable(interopOptions));
 
       return FileSystemWritableFileStream(stream);
+    } catch (error) {
+      if (jsIsNativeError(error, "NotAllowedError")) {
+        throw NotAllowedError();
+      } else if (jsIsNativeError(error, "NotFoundError")) {
+        throw NotFoundError();
+      } else {
+        rethrow;
+      }
+    }
+  }
+
+  @override
+  Future<void> rename(String name) {
+    try {
+      return js.promiseToFuture(_handle.move(name));
+    } catch (error) {
+      if (jsIsNativeError(error, "NotAllowedError")) {
+        throw NotAllowedError();
+      } else if (jsIsNativeError(error, "NotFoundError")) {
+        throw NotFoundError();
+      } else {
+        rethrow;
+      }
+    }
+  }
+
+  @override
+  Future<void> move(api1.FileSystemDirectoryHandle directory, [String? name]) async {
+    try {
+      return js.promiseToFuture(_handle.move((directory as wrapper0.FileSystemHandle).handle, name ?? undefined));
     } catch (error) {
       if (jsIsNativeError(error, "NotAllowedError")) {
         throw NotAllowedError();
