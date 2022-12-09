@@ -176,7 +176,7 @@ void main() {
     final handles = await FileSystemAccess.fromDropEvent(event);
     
     for (final handle in handles) {
-      print("<${handle.kind} name='${handle.name}' />");
+      print("<${handle.kind.name} name='${handle.name}' />");
     }
   });
 }
@@ -240,7 +240,6 @@ There is no wrapper around this JavaScript feature for now.
 
 ### [Origin Private File System]
 There is no wrapper around these JavaScript features for now:
-> - FileSystemHandle.move()
 > - FileSystemHandle.remove()
 
 ## Known issues

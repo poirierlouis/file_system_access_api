@@ -132,9 +132,9 @@ class TreeViewerTab {
   }
 
   HtmlElement buildDOMTree(dynamic tree, {int depth = 0}) {
-    if (tree["type"] == "file") {
+    if (tree["type"] == FileSystemKind.file) {
       return buildFileDOMElement(tree);
-    } else if (tree["type"] == "directory") {
+    } else if (tree["type"] == FileSystemKind.directory) {
       return buildDirectoryDOMElement(tree, depth: depth);
     }
     ParagraphElement $node = ParagraphElement();

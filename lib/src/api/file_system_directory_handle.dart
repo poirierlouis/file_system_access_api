@@ -15,7 +15,7 @@ abstract class FileSystemDirectoryHandle implements FileSystemHandle {
   ///   .cast<FileSystemFileHandle>()
   ///   .toList();
   /// final directoriesOnly = directory.values
-  ///   .where((handle) => handle.kind == "directory"))
+  ///   .where((handle) => handle.kind == FileSystemKind.directory))
   ///   .cast<FileSystemDirectoryHandle>()
   ///   .toList();
   ///

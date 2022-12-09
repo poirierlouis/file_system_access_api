@@ -1,5 +1,6 @@
 import 'package:file_system_access_api/src/api/errors.dart';
 import 'package:file_system_access_api/src/api/file_system_handle.dart' as api0;
+import 'package:file_system_access_api/src/api/file_system_kind.dart';
 import 'package:file_system_access_api/src/api/permissions.dart';
 import 'package:file_system_access_api/src/interop/file_system_handle.dart' as interop2;
 import 'package:file_system_access_api/src/interop/interop_utils.dart';
@@ -11,7 +12,7 @@ class FileSystemHandle implements api0.FileSystemHandle {
   final interop2.FileSystemHandle handle;
 
   @override
-  String get kind => handle.kind;
+  FileSystemKind get kind => FileSystemKind.values.byName(handle.kind);
   @override
   String get name => handle.name;
 

@@ -1,3 +1,4 @@
+import 'package:file_system_access_api/src/api/file_system_kind.dart';
 import 'package:file_system_access_api/src/api/permissions.dart';
 
 /// Represents a file or directory entry. Multiple handles can represent the same entry. For the most part you do not
@@ -6,8 +7,8 @@ import 'package:file_system_access_api/src/api/permissions.dart';
 ///
 /// Example and more on [MDN Web Docs](https://developer.mozilla.org/docs/Web/API/FileSystemHandle)
 abstract class FileSystemHandle {
-  /// Returns the type of entry. This is 'file' if the associated entry is a file or 'directory'.
-  String get kind;
+  /// Returns the type of entry. [file] if the associated entry is a file or [directory].
+  FileSystemKind get kind;
 
   /// Returns the name of the associated entry (extension included).
   String get name;
