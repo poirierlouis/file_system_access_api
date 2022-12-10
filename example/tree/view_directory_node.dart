@@ -113,10 +113,13 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
         return;
       }
       final node = ViewNode.fromHandle(file, depth, parent: this, isPrivate: isPrivate);
-      final $dom = node.build(onClick);
 
       children.add(node);
-      $panel.append($dom);
+      if (isExpanded) {
+        final $dom = node.build(onClick);
+
+        $panel.append($dom);
+      }
     } catch (error) {
       window.alert(error.toString());
     }
