@@ -21,9 +21,15 @@ abstract class ViewNode<T extends FileSystemHandle> {
   HtmlElement? $dom;
   String get $selector => (handle.kind == FileSystemKind.file) ? "file-$uuid" : "folder-$uuid";
 
-  void remove() {
-    $dom?.remove();
+  void remove({bool recursive = false}) {
+    if ($dom == null) {
+      return;
+    }
+    $dom!.remove();
     $dom = null;
+    if (recursive && parent != null && parent is ViewDirectoryNode) {
+      (parent as ViewDirectoryNode).removeChild(this);
+    }
   }
 
   HtmlElement build(ViewNodeListener onClick);

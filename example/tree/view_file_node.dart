@@ -5,6 +5,7 @@ import 'package:file_system_access_api/file_system_access_api.dart';
 import 'view_dialog_confirm.dart';
 import 'view_dialog_form.dart';
 import 'view_directory_node.dart';
+import 'view_drag_context.dart';
 import 'view_file_menu.dart';
 import 'view_node.dart';
 
@@ -18,6 +19,11 @@ class ViewFileNode extends ViewNode<FileSystemFileHandle> {
     $menu.show(event);
     $menu.$btnRename.onClick.listen((event) => onRename());
     $menu.$btnDelete.onClick.listen((event) => onDelete());
+  }
+
+  void onDrag(MouseEvent event) {
+    event.dataTransfer.setData("text/x-fsa-handle", uuid);
+    ViewDragContext.drag(this);
   }
 
   void onRename() async {
@@ -65,7 +71,9 @@ class ViewFileNode extends ViewNode<FileSystemFileHandle> {
     $dom!.id = $selector;
     $dom!.onClick.listen((event) => onClick(handle));
     if (isPrivate) {
+      $dom!.draggable = true;
       $dom!.onContextMenu.listen(onShowActions);
+      $dom!.onDragStart.listen(onDrag);
     }
     return $dom!;
   }

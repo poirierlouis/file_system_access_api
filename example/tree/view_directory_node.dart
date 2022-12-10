@@ -6,6 +6,8 @@ import '../example.dart';
 import 'view_dialog_confirm.dart';
 import 'view_dialog_form.dart';
 import 'view_directory_menu.dart';
+import 'view_drag_context.dart';
+import 'view_file_node.dart';
 import 'view_node.dart';
 
 class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
@@ -33,11 +35,11 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
   }
 
   void removeChild(ViewNode node) {
-    final $child = $panel.querySelector("#${node.$selector}") as HtmlElement;
+    final $child = $panel.querySelector("#${node.$selector}") as HtmlElement?;
 
     node.remove();
     children.remove(node);
-    $child.remove();
+    $child?.remove();
   }
 
   void dispose() {
@@ -46,6 +48,12 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
     }
     children.clear();
     isLoaded = false;
+  }
+
+  @override
+  void remove({bool recursive = false}) {
+    dispose();
+    super.remove(recursive: recursive);
   }
 
   void onToggleExpand(ViewNodeListener onClick, DivElement $panel, SpanElement $icon) async {
@@ -73,6 +81,32 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
       $menu.$btnDelete.onClick.listen((event) => onDelete());
     } else {
       $menu.$btnDelete.hide();
+    }
+  }
+
+  void onDrop(MouseEvent event, ViewNodeListener onClick) async {
+    final uuid = event.dataTransfer.getData("text/x-fsa-handle");
+    var node = ViewDragContext.drop(uuid);
+
+    if (node == null) {
+      return;
+    }
+    if (node is! ViewFileNode) {
+      return;
+    }
+    try {
+      await node.handle.move(handle);
+
+      node.remove(recursive: true);
+      node = ViewNode.fromHandle(node.handle, depth, parent: this, isPrivate: isPrivate);
+      children.add(node);
+      if (isExpanded) {
+        final $dom = node.build(onClick);
+
+        $panel.append($dom);
+      }
+    } catch (error) {
+      window.alert(error.toString());
     }
   }
 
@@ -144,12 +178,6 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
   }
 
   @override
-  void remove() {
-    dispose();
-    super.remove();
-  }
-
-  @override
   HtmlElement build(ViewNodeListener onClick) {
     $dom = DivElement();
 
@@ -165,6 +193,8 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
     $tile.onClick.listen((event) => onToggleExpand(onClick, $panel, $icon));
     if (isPrivate) {
       $tile.onContextMenu.listen((event) => onShowActions(event, onClick));
+      $tile.onDragOver.listen((event) => event.preventDefault());
+      $tile.onDrop.listen((event) => onDrop(event, onClick));
     }
     $dom!.id = $selector;
     $dom!.append($tile);
