@@ -1,3 +1,10 @@
+# File System Access API
+
+[![Pub Version](https://img.shields.io/pub/v/file_system_access_api)](https://pub.dev/packages/file_system_access_api)
+![Platform Web](https://img.shields.io/badge/platform-web-blue)
+[![License MIT](https://img.shields.io/github/license/poirierlouis/file_system_access_api)](https://github.com/poirierlouis/file_system_access_api/blob/master/LICENSE)
+[![Donate](https://img.shields.io/badge/donate-buy%20me%20a%20coffee-yellow)](https://www.buymeacoffee.com/lpfreelance)
+
 A Dart library to expose the File System Access API from web platform.
 You can pick files and directories from user's local file system to read, write, create, move and delete files from Dart
 web apps.
