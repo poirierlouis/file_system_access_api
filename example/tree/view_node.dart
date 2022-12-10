@@ -8,14 +8,18 @@ import 'view_file_node.dart';
 typedef ViewNodeListener = void Function(FileSystemFileHandle);
 
 abstract class ViewNode<T extends FileSystemHandle> {
-  ViewNode({required this.handle, required this.depth, this.parent});
+  ViewNode({required this.handle, required this.depth, this.parent, this.isPrivate = false});
 
   final ViewNode<FileSystemDirectoryHandle>? parent;
   final int depth;
+  final bool isPrivate;
 
   final T handle;
 
+  String get uuid => handle.hashCode.toRadixString(16);
+
   HtmlElement? $dom;
+  String get $selector => (handle.kind == FileSystemKind.file) ? "file-$uuid" : "folder-$uuid";
 
   void remove() {
     $dom?.remove();
@@ -24,23 +28,30 @@ abstract class ViewNode<T extends FileSystemHandle> {
 
   HtmlElement build(ViewNodeListener onClick);
 
-  static ViewNode fromHandle(FileSystemHandle handle, int depth, {ViewNode<FileSystemDirectoryHandle>? parent}) {
+  static ViewNode fromHandle(FileSystemHandle handle, int depth,
+      {ViewNode<FileSystemDirectoryHandle>? parent, bool isPrivate = false}) {
     if (handle is FileSystemFileHandle) {
-      return ViewFileNode(handle: handle, depth: depth + 1, parent: parent);
+      return ViewFileNode(handle: handle, depth: depth + 1, parent: parent, isPrivate: isPrivate);
     } else if (handle is FileSystemDirectoryHandle) {
-      return ViewDirectoryNode(handle: handle, depth: depth + 1, parent: parent);
+      return ViewDirectoryNode(handle: handle, depth: depth + 1, parent: parent, isPrivate: isPrivate);
     }
     throw "unknown kind: ${handle.kind.name}";
   }
 
-  static ParagraphElement buildNodeTile(String name, String icon) {
-    final $dom = ParagraphElement();
-    final iconClassName = icon.contains("folder") ? "tree-node-folder" : "tree-node-$icon";
+  static DivElement buildNodeTile(String name, String icon, {String color = "icon"}) {
+    final $dom = DivElement();
+    final $leading = ParagraphElement();
     final $icon = buildIcon(icon);
 
-    $dom.className = "tree-node $iconClassName";
-    $dom.append($icon);
-    $dom.appendText(name);
+    $dom.setAttribute("clickable", true);
+
+    $icon.setAttribute("color", color);
+
+    $leading.className = "tree-node";
+    $leading.append($icon);
+    $leading.appendText(name);
+
+    $dom.append($leading);
     return $dom;
   }
 

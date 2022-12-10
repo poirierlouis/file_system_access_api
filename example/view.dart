@@ -4,7 +4,10 @@ import 'abstract_tab.dart';
 import 'example.dart';
 import 'image_viewer_tab.dart';
 import 'light_storage.dart';
+import 'opfs_editor_tab.dart';
 import 'text_editor_tab.dart';
+import 'tree/view_dialog_confirm.dart';
+import 'tree/view_dialog_form.dart';
 import 'tree_viewer_tab.dart';
 
 class View {
@@ -13,12 +16,14 @@ class View {
   late ImageViewerTab imageViewer;
   late TextEditorTab textEditor;
   late TreeViewerTab treeViewer;
+  late OpfsEditorTab opfsEditor;
 
-  List<Tab> get tabs => [imageViewer, textEditor, treeViewer];
+  List<Tab> get tabs => [imageViewer, textEditor, treeViewer, opfsEditor];
   Map<String, Tab> get tabPerName => {
         "viewer": imageViewer,
         "editor": textEditor,
         "tree": treeViewer,
+        "opfs": opfsEditor,
       };
 
   HtmlElement get $header => querySelector("header") as HtmlElement;
@@ -27,32 +32,39 @@ class View {
   HtmlElement get $viewer => querySelector("#viewer") as HtmlElement;
   HtmlElement get $editor => querySelector("#editor") as HtmlElement;
   HtmlElement get $tree => querySelector("#tree") as HtmlElement;
+  HtmlElement get $opfs => querySelector("#opfs") as HtmlElement;
 
   AnchorElement get $btnTabAbout => $header.querySelector("a[href='#about']") as AnchorElement;
   AnchorElement get $btnTabViewer => $header.querySelector("a[href='#viewer']") as AnchorElement;
   AnchorElement get $btnTabEditor => $header.querySelector("a[href='#editor']") as AnchorElement;
   AnchorElement get $btnTabTree => $header.querySelector("a[href='#tree']") as AnchorElement;
+  AnchorElement get $btnTabOpfs => $header.querySelector("a[href='#opfs']") as AnchorElement;
 
-  List<HtmlElement> get $tabs => [$about, $viewer, $editor, $tree];
-  List<AnchorElement> get $btnTabs => [$btnTabAbout, $btnTabViewer, $btnTabEditor, $btnTabTree];
+  List<HtmlElement> get $tabs => [$about, $viewer, $editor, $tree, $opfs];
+  List<AnchorElement> get $btnTabs => [$btnTabAbout, $btnTabViewer, $btnTabEditor, $btnTabTree, $btnTabOpfs];
 
   Map<String, HtmlElement> get $tabPerName => {
         "about": $about,
         "viewer": $viewer,
         "editor": $editor,
         "tree": $tree,
+        "opfs": $opfs,
       };
   Map<String, HtmlElement> get $btnTabPerName => {
         "about": $btnTabAbout,
         "viewer": $btnTabViewer,
         "editor": $btnTabEditor,
         "tree": $btnTabTree,
+        "opfs": $btnTabOpfs,
       };
 
   Future<void> init(LightStorage db) async {
+    ViewDialogForm.init();
+    ViewDialogConfirm.init();
     imageViewer = ImageViewerTab(db);
     textEditor = TextEditorTab(db);
     treeViewer = TreeViewerTab(db);
+    opfsEditor = OpfsEditorTab(db);
     for (final name in $btnTabPerName.keys) {
       $btnTabPerName[name]!.onClick.listen((event) => selectTab(name));
     }

@@ -29,7 +29,10 @@
 
             --primary-dark10-color: #c43e00;
 
+            --secondary-disabled-color: #406480;
             --secondary-light20-color: #0091ff;
+
+            --surface-light-color: #383838;
 
             margin: 0;
             height: inherit;
@@ -60,7 +63,8 @@
             height: inherit;
         }
 
-        section#tree {
+        section#tree,
+        section#opfs {
             color: var(--text-color);
         }
 
@@ -93,12 +97,16 @@
             margin: 12px;
 
             color: var(--text-color);
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: bold;
             text-align: justify;
 
             background-color: var(--surface-color);
             border-radius: 4px;
+        }
+
+        .card-expand {
+            width: auto;
         }
 
         .card-info {
@@ -151,8 +159,26 @@
             background-color: var(--secondary-light20-color);
         }
 
+        button[disabled] {
+            cursor: not-allowed;
+            color: grey;
+
+            background-color: var(--secondary-disabled-color);
+        }
+
         img {
             max-width: 80%;
+        }
+
+        input {
+            padding: 8px;
+
+            color: white;
+            font-size: 1rem;
+
+            background-color: var(--surface-light-color);
+            border: none;
+            border-radius: 4px;
         }
 
         section#editor textarea {
@@ -175,6 +201,10 @@
             padding: 24px;
         }
 
+        [clickable="true"] {
+            cursor: pointer;
+        }
+
         .text-center {
             text-align: center;
         }
@@ -194,17 +224,105 @@
             font-size: 1rem;
         }
 
-        .tree-node-folder {
-            cursor: pointer;
+        .tree-form {
+            display: flex;
+            align-items: center;
+        }
+
+        .tree-form span:nth-child(2) {
+            margin: 0 8px;
+            color: var(--icon-color);
+        }
+
+        .tree-form span:last-child {
+            color: var(--primary-color);
         }
 
         .tree-node span {
             margin-right: 12px;
+        }
+
+        span[color="primary"] {
+            color: var(--primary-color);
+        }
+
+        span[color="secondary"] {
+            color: var(--secondary-color);
+        }
+
+        span[color="icon"] {
             color: var(--icon-color);
         }
 
-        .tree-node-folder span {
-            color: var(--primary-color);
+        span[color="error"] {
+            color: var(--error-color);
+        }
+
+        dialog {
+            padding: 24px;
+
+            color: var(--text-color);
+
+            background-color: var(--surface-color);
+            border: none;
+            border-radius: 4px;
+        }
+
+        dialog::backdrop {
+            background-color: rgba(18, 18, 18, .8);
+        }
+
+        dialog form {
+            display: flex;
+            flex-flow: column;
+            gap: 12px;
+
+            color: white;
+            font-size: 1rem;
+        }
+
+        dialog form .actions {
+            display: flex;
+            justify-content: end;
+            margin-top: 12px;
+        }
+
+        dialog form button {
+            margin: 0 12px;
+        }
+
+        .menu {
+            position: fixed;
+            color: white;
+            font-size: 1rem;
+
+            background-color: var(--surface-color);
+            border-radius: 4px;
+        }
+
+        .menu div {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 8px;
+        }
+
+        .menu div:first-child {
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        .menu div:last-child {
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+
+        .menu div span {
+            margin-right: 12px;
+        }
+
+        .menu div:hover {
+            background-color: var(--surface-light-color);
         }
     </style>
 </head>
@@ -214,6 +332,7 @@
         <a href="#viewer">Image viewer</a>
         <a href="#editor">Text editor</a>
         <a href="#tree">Tree viewer</a>
+        <a href="#opfs"><abbr title="Origin Private File System">OPFS</abbr></a>
     </header>
 
     <section id="unsupported" style="display:none">
@@ -284,6 +403,70 @@
         <div id="root"></div>
         <div id="loading" class="card card-info" style="display:none">
             Loading...
+        </div>
+    </section>
+
+    <section id="opfs" style="display:none">
+        <div class="card card-expand">
+            <p>Access private file system for this origin page.</p>
+            <p>Add, rename, move and delete files / directories.</p>
+        </div>
+
+        <div id="root"></div>
+
+        <dialog id="form">
+            <form method="dialog">
+                <label>New directory</label>
+                <input type="text" placeholder="Name of folder" minlength="1" maxlength="255" />
+                <div class="actions">
+                    <button value="">Cancel</button>
+                    <button id="submit" disabled>Create</button>
+                </div>
+            </form>
+        </dialog>
+
+        <dialog id="confirm">
+            <form method="dialog">
+                <p>Are you sure you want to remove this file?</p>
+                <div class="actions">
+                    <button value="false">No</button>
+                    <button id="submit" value="true">Yes</button>
+                </div>
+            </form>
+        </dialog>
+
+        <div id="directory-menu" class="menu" style="display:none">
+            <div id="btn-directory">
+                <span class="material-symbols-outlined" color="primary">create_new_folder</span>
+                New directory
+            </div>
+
+            <div id="btn-file">
+                <span class="material-symbols-outlined" color="icon">note_add</span>
+                New file
+            </div>
+
+            <div id="btn-rename">
+                <span class="material-symbols-outlined" color="secondary">edit</span>
+                Rename
+            </div>
+
+            <div id="btn-delete">
+                <span class="material-symbols-outlined" color="error">delete</span>
+                Delete
+            </div>
+        </div>
+
+        <div id="file-menu" class="menu" style="display:none">
+            <div id="btn-rename">
+                <span class="material-symbols-outlined" color="secondary">edit</span>
+                Rename
+            </div>
+
+            <div id="btn-delete">
+                <span class="material-symbols-outlined" color="error">delete</span>
+                Delete
+            </div>
         </div>
     </section>
 </body>
