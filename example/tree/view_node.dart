@@ -10,7 +10,7 @@ typedef ViewNodeListener = void Function(FileSystemFileHandle);
 abstract class ViewNode<T extends FileSystemHandle> {
   ViewNode({required this.handle, required this.depth, this.parent, this.isPrivate = false});
 
-  final ViewNode<FileSystemDirectoryHandle>? parent;
+  final ViewDirectoryNode? parent;
   final int depth;
   final bool isPrivate;
 
@@ -27,15 +27,14 @@ abstract class ViewNode<T extends FileSystemHandle> {
     }
     $dom!.remove();
     $dom = null;
-    if (recursive && parent != null && parent is ViewDirectoryNode) {
-      (parent as ViewDirectoryNode).removeChild(this);
+    if (recursive && parent != null) {
+      parent!.removeChild(this);
     }
   }
 
   HtmlElement build(ViewNodeListener onClick);
 
-  static ViewNode fromHandle(FileSystemHandle handle, int depth,
-      {ViewNode<FileSystemDirectoryHandle>? parent, bool isPrivate = false}) {
+  static ViewNode fromHandle(FileSystemHandle handle, int depth, {ViewDirectoryNode? parent, bool isPrivate = false}) {
     if (handle is FileSystemFileHandle) {
       return ViewFileNode(handle: handle, depth: depth + 1, parent: parent, isPrivate: isPrivate);
     } else if (handle is FileSystemDirectoryHandle) {

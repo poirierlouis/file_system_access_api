@@ -4,7 +4,6 @@ import 'package:file_system_access_api/file_system_access_api.dart';
 
 import 'view_dialog_confirm.dart';
 import 'view_dialog_form.dart';
-import 'view_directory_node.dart';
 import 'view_drag_context.dart';
 import 'view_file_menu.dart';
 import 'view_node.dart';
@@ -61,7 +60,7 @@ class ViewFileNode extends ViewNode<FileSystemFileHandle> {
     final directory = parent!.handle;
 
     await directory.removeEntry(handle.name);
-    (parent! as ViewDirectoryNode).removeChild(this);
+    parent!.removeChild(this);
   }
 
   @override
