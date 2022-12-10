@@ -68,7 +68,12 @@ class FileSystemFileHandle extends wrapper0.FileSystemHandle implements api0.Fil
   @override
   Future<void> move(api1.FileSystemDirectoryHandle directory, {String? name}) async {
     try {
-      return js.promiseToFuture(_handle.move((directory as wrapper0.FileSystemHandle).handle, name ?? undefined));
+      final List<dynamic> args = [(directory as wrapper0.FileSystemHandle).handle];
+
+      if (name != null) {
+        args.add(name);
+      }
+      return js.promiseToFuture(js.callMethod(_handle, "move", args));
     } catch (error) {
       if (jsIsNativeError(error, "NotAllowedError")) {
         throw NotAllowedError();
