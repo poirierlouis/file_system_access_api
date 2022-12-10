@@ -92,6 +92,13 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
       return;
     }
     if (node is! ViewFileNode) {
+      print("FileSystemHandle.move() is currently not supported on directories.");
+      return;
+    }
+    if (await _isChild(node.handle)) {
+      final path = await _resolvePath(node.handle);
+
+      print("File already present in: $path");
       return;
     }
     try {
@@ -220,5 +227,27 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
     $panel.id = "panel-$uuid";
     $panel.className = "tree-panel";
     return $panel;
+  }
+
+  Future<String> _resolvePath(FileSystemHandle file) async {
+    if (parent == null) {
+      return "/";
+    }
+    FileSystemDirectoryHandle? root = await window.navigator.storage?.getDirectory();
+    List<String>? paths = await root?.resolve(file);
+
+    if (paths == null) {
+      return "/";
+    }
+    return "/${paths.take(paths.length - 1).join("/")}/";
+  }
+
+  Future<bool> _isChild(FileSystemHandle file) async {
+    await for (final child in handle.values) {
+      if (await child.isSameEntry(file)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
