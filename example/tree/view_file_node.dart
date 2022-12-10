@@ -2,27 +2,21 @@ import 'dart:html';
 
 import 'package:file_system_access_api/file_system_access_api.dart';
 
-import '../example.dart';
 import 'view_dialog_confirm.dart';
 import 'view_dialog_form.dart';
-import 'view_directory_menu.dart';
 import 'view_directory_node.dart';
+import 'view_file_menu.dart';
 import 'view_node.dart';
 
 class ViewFileNode extends ViewNode<FileSystemFileHandle> {
   ViewFileNode({required super.handle, required super.depth, super.parent, super.isPrivate});
 
-  ViewDirectoryMenu $menu = ViewDirectoryMenu();
+  ViewFileMenu $menu = ViewFileMenu();
 
   void onShowActions(MouseEvent event) {
     event.preventDefault();
     $menu.show(event);
-    $menu.$parent.onClick.listen((event) => $menu.hide());
-    $menu.$btnNewDirectory.hide();
-    $menu.$btnNewFile.hide();
-    $menu.$btnRename.show();
     $menu.$btnRename.onClick.listen((event) => onRename());
-    $menu.$btnDelete.show();
     $menu.$btnDelete.onClick.listen((event) => onDelete());
   }
 
@@ -39,8 +33,9 @@ class ViewFileNode extends ViewNode<FileSystemFileHandle> {
       final $tile = $dom!.querySelector("p") as ParagraphElement;
       final $icon = ViewNode.buildIcon("draft");
 
-      $icon.setAttribute("color", "icon");
       $tile.innerHtml = "";
+      $icon.setAttribute("color", "icon");
+
       $tile.append($icon);
       $tile.appendText(fileName);
     } catch (error) {

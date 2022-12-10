@@ -66,12 +66,8 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
   void onShowActions(MouseEvent event, ViewNodeListener onClick) {
     event.preventDefault();
     $menu.show(event);
-    $menu.$parent.onClick.listen((event) => $menu.hide());
-    $menu.$btnNewDirectory.show();
     $menu.$btnNewDirectory.onClick.listen((event) => onNewDirectory(onClick));
-    $menu.$btnNewFile.show();
     $menu.$btnNewFile.onClick.listen((event) => onNewFile(onClick));
-    $menu.$btnRename.hide();
     if (parent != null) {
       $menu.$btnDelete.show();
       $menu.$btnDelete.onClick.listen((event) => onDelete());
