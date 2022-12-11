@@ -1,6 +1,6 @@
 import 'dart:html';
 
-import '../example.dart';
+import '../index.dart';
 import 'view_node.dart';
 
 abstract class ViewActionsMenu {

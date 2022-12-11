@@ -2,7 +2,7 @@ import 'dart:html';
 
 import 'package:file_system_access_api/file_system_access_api.dart';
 
-import '../example.dart';
+import '../index.dart';
 import 'view_dialog_confirm.dart';
 import 'view_dialog_form.dart';
 import 'view_directory_menu.dart';

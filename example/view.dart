@@ -1,8 +1,8 @@
 import 'dart:html';
 
 import 'abstract_tab.dart';
-import 'example.dart';
 import 'image_viewer_tab.dart';
+import 'index.dart';
 import 'light_storage.dart';
 import 'opfs_editor_tab.dart';
 import 'text_editor_tab.dart';
