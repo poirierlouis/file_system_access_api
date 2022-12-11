@@ -1,0 +1,319 @@
+html {
+    height: 100%;
+}
+
+body {
+    --primary-color: #ff6f00;
+    --secondary-color: #0480fc;
+    --error-color: #b00020;
+
+    --background-color: #121212;
+    --surface-color: #1e1e1e;
+    --icon-color: #808080;
+    --border-color: rgba(128, 128, 128, 0.25);
+
+    --text-color: rgba(255, 255, 255, 0.9);
+
+    --primary-light10-color: #ffa040;
+
+    --primary-dark10-color: #c43e00;
+
+    --secondary-disabled-color: #406480;
+    --secondary-light20-color: #0091ff;
+
+    --surface-light-color: #383838;
+
+    margin: 0;
+    height: inherit;
+
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--background-color);
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 56px;
+    gap: 24px;
+
+    background-color: var(--primary-color);
+}
+
+section {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+section#unsupported {
+    height: inherit;
+}
+
+section#tree,
+section#opfs {
+    color: var(--text-color);
+}
+
+a {
+    display: block;
+    height: inherit;
+    padding: 0 16px;
+
+    color: black;
+    line-height: 56px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+
+a:hover {
+    background-color: var(--primary-light10-color);
+}
+
+a.active {
+    background-color: var(--primary-light10-color);
+}
+
+.card {
+    display: flex;
+    flex-flow: column;
+    width: 33%;
+    height: fit-content;
+    padding: 24px;
+    margin: 12px;
+
+    color: var(--text-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: justify;
+
+    background-color: var(--surface-color);
+    border-radius: 4px;
+}
+
+.card-expand {
+    width: auto;
+}
+
+.card-info {
+    color: var(--primary-color);
+    justify-content: center;
+}
+
+.card-error {
+    color: var(--error-color);
+}
+
+.card p {
+    margin: 8px 0;
+    font-size: 1.25rem;
+    font-weight: normal;
+}
+
+.card p span {
+    color: var(--primary-color);
+}
+
+.card p span.button {
+    padding: 0 8px;
+
+    color: var(--text-color);
+    font-weight: normal;
+    text-transform: uppercase;
+
+    background-color: var(--secondary-color);
+    border-radius: 4px;
+}
+
+button {
+    margin: 24px;
+    padding: 8px 16px;
+
+    color: var(--text-color);
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+
+    background-color: var(--secondary-color);
+    border: none;
+    border-radius: 4px;
+}
+
+button:hover {
+    cursor: pointer;
+
+    background-color: var(--secondary-light20-color);
+}
+
+button[disabled] {
+    cursor: not-allowed;
+    color: grey;
+
+    background-color: var(--secondary-disabled-color);
+}
+
+img {
+    max-width: 80%;
+}
+
+input {
+    padding: 8px;
+
+    color: white;
+    font-size: 1rem;
+
+    background-color: var(--surface-light-color);
+    border: none;
+    border-radius: 4px;
+}
+
+section#editor textarea {
+    width: 60%;
+    height: 60vw;
+    margin-bottom: 24px;
+
+    color: var(--text-color);
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+
+    background-color: var(--surface-color);
+    border: none;
+    border-radius: 4px;
+}
+
+div#root {
+    width: calc(100% - 24px * 2);
+    margin: auto;
+    padding: 24px;
+}
+
+div#root div {
+    width: fit-content;
+}
+
+[clickable="true"] {
+    cursor: pointer;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.tree-panel {
+    margin-left: 10px;
+    padding-left: 24px;
+
+    border-left: 2px solid var(--border-color);
+}
+
+.tree-node {
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+
+    font-size: 1rem;
+}
+
+.tree-form {
+    display: flex;
+    align-items: center;
+}
+
+.tree-form span:nth-child(2) {
+    margin: 0 8px;
+    color: var(--icon-color);
+}
+
+.tree-form span:last-child {
+    color: var(--primary-color);
+}
+
+.tree-node span {
+    margin-right: 12px;
+}
+
+span[color="primary"] {
+    color: var(--primary-color);
+}
+
+span[color="secondary"] {
+    color: var(--secondary-color);
+}
+
+span[color="icon"] {
+    color: var(--icon-color);
+}
+
+span[color="error"] {
+    color: var(--error-color);
+}
+
+dialog {
+    padding: 24px;
+
+    color: var(--text-color);
+
+    background-color: var(--surface-color);
+    border: none;
+    border-radius: 4px;
+}
+
+dialog::backdrop {
+    background-color: rgba(18, 18, 18, .8);
+}
+
+dialog form {
+    display: flex;
+    flex-flow: column;
+    gap: 12px;
+
+    color: white;
+    font-size: 1rem;
+}
+
+dialog form .actions {
+    display: flex;
+    justify-content: end;
+    margin-top: 12px;
+}
+
+dialog form button {
+    margin: 0 12px;
+}
+
+.menu {
+    position: fixed;
+    color: white;
+    font-size: 1rem;
+
+    background-color: var(--surface-color);
+    border-radius: 4px;
+}
+
+.menu div {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+}
+
+.menu div:first-child {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.menu div:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.menu div span {
+    margin-right: 12px;
+}
+
+.menu div:hover {
+    background-color: var(--surface-light-color);
+}
