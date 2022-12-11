@@ -22,7 +22,6 @@ See a more detailed description on [MDN Web Docs] or keep reading to [Usage](#us
 Install library in your Dart project:
 ```shell
 $ dart pub add file_system_access_api
-$ dart pub get
 ```
 
 You're all set to play around with the API.
@@ -203,7 +202,7 @@ structure. You should not expect to find those files/directories as-this on the 
 You can get a root directory of the origin private file system with:
 ```dart
 void main() async {
-  FileSystemDirectoryHandle root = await window.navigator.storage?.getDirectory();
+  FileSystemDirectoryHandle? root = await window.navigator.storage?.getDirectory();
 }
 ```
 
@@ -246,7 +245,7 @@ There is no wrapper around this JavaScript feature for now.
 > - FileSystemFileHandle.createSyncAccessHandle()
 
 ### [Origin Private File System]
-There is no wrapper around these JavaScript features for now:
+There is no wrapper around this JavaScript feature for now:
 > - FileSystemHandle.remove()
 
 ## Known issues
