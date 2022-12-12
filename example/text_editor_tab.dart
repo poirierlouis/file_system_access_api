@@ -8,12 +8,10 @@ import 'light_storage.dart';
 class TextEditorTab extends Tab {
   TextEditorTab(final LightStorage storage) : super(storage: storage, name: "editor");
 
-  HtmlElement get $view => querySelector("#editor") as HtmlElement;
-
-  ButtonElement get $btnNew => $view.querySelector("button#new") as ButtonElement;
-  ButtonElement get $btnOpen => $view.querySelector("button#open") as ButtonElement;
-  ButtonElement get $btnSave => $view.querySelector("button#save") as ButtonElement;
-  TextAreaElement get $textarea => $view.querySelector("textarea") as TextAreaElement;
+  late final ButtonElement $btnNew = $view.querySelector("button#new") as ButtonElement;
+  late final ButtonElement $btnOpen = $view.querySelector("button#open") as ButtonElement;
+  late final ButtonElement $btnSave = $view.querySelector("button#save") as ButtonElement;
+  late final TextAreaElement $textarea = $view.querySelector("textarea") as TextAreaElement;
 
   FileSystemFileHandle? handle;
 

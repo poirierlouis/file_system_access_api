@@ -11,11 +11,9 @@ import 'light_storage.dart';
 class ImageViewerTab extends Tab {
   ImageViewerTab(final LightStorage storage) : super(storage: storage, name: "viewer");
 
-  HtmlElement get $view => querySelector("#viewer") as HtmlElement;
-
-  ButtonElement get $btnOpenImage => $view.querySelector("button") as ButtonElement;
-  DivElement get $dndContainer => $view.querySelector("#drag-n-drop") as DivElement;
-  ImageElement get $img => $view.querySelector("img") as ImageElement;
+  late final ButtonElement $btnOpenImage = $view.querySelector("button") as ButtonElement;
+  late final DivElement $dndContainer = $view.querySelector("#drag-n-drop") as DivElement;
+  late final ImageElement $img = $view.querySelector("img") as ImageElement;
 
   @override
   Future<void> init() async {

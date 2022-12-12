@@ -10,13 +10,11 @@ import 'tree/view_directory_node.dart';
 class TreeViewerTab extends Tab {
   TreeViewerTab(final LightStorage storage) : super(storage: storage, name: "tree");
 
-  HtmlElement get $view => querySelector("#tree") as HtmlElement;
+  late final ButtonElement $btnOpenDirectory = $view.querySelector("button#open") as ButtonElement;
+  late final ButtonElement $btnClearRecent = $view.querySelector("button#clear") as ButtonElement;
 
-  ButtonElement get $btnOpenDirectory => $view.querySelector("button#open") as ButtonElement;
-  ButtonElement get $btnClearRecent => $view.querySelector("button#clear") as ButtonElement;
-
-  DivElement get $root => $view.querySelector("div#root") as DivElement;
-  DivElement get $cardLoading => $view.querySelector("div#loading") as DivElement;
+  late final DivElement $root = $view.querySelector("div#root") as DivElement;
+  late final DivElement $cardLoading = $view.querySelector("div#loading") as DivElement;
 
   FileSystemDirectoryHandle? _directory;
   ViewDirectoryNode? _tree;

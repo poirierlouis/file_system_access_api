@@ -10,13 +10,11 @@ import 'tree/view_directory_node.dart';
 import 'tree/view_file_menu.dart';
 
 class OpfsEditorTab extends Tab {
-  OpfsEditorTab(final LightStorage storage) : super(storage: storage, name: "tree");
+  OpfsEditorTab(final LightStorage storage) : super(storage: storage, name: "opfs");
 
-  HtmlElement get $view => querySelector("#opfs") as HtmlElement;
-
-  DivElement get $root => $view.querySelector("div#root") as DivElement;
-  ViewDirectoryMenu get $directoryMenu => ViewDirectoryMenu();
-  ViewFileMenu get $fileMenu => ViewFileMenu();
+  late final DivElement $root = $view.querySelector("div#root") as DivElement;
+  late final ViewDirectoryMenu $directoryMenu = ViewDirectoryMenu();
+  late final ViewFileMenu $fileMenu = ViewFileMenu();
 
   FileSystemDirectoryHandle? _directory;
   ViewDirectoryNode? _tree;
