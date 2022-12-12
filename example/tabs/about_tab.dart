@@ -1,5 +1,5 @@
+import '../light_storage.dart';
 import 'abstract_tab.dart';
-import 'light_storage.dart';
 
 class AboutTab extends Tab {
   AboutTab(final LightStorage storage) : super(storage: storage, name: "about");

@@ -1,14 +1,14 @@
 import 'dart:html';
 
-import 'about_tab.dart';
-import 'abstract_tab.dart';
-import 'image_viewer_tab.dart';
 import 'light_storage.dart';
-import 'opfs_editor_tab.dart';
-import 'text_editor_tab.dart';
+import 'tabs/about_tab.dart';
+import 'tabs/abstract_tab.dart';
+import 'tabs/image_viewer_tab.dart';
+import 'tabs/opfs_editor_tab.dart';
+import 'tabs/text_editor_tab.dart';
+import 'tabs/tree_viewer_tab.dart';
 import 'tree/view_dialog_confirm.dart';
 import 'tree/view_dialog_form.dart';
-import 'tree_viewer_tab.dart';
 
 class View {
   String selectedTab = "about";

@@ -1,7 +1,7 @@
 import 'dart:html';
 
-import 'index.dart';
-import 'light_storage.dart';
+import '../index.dart';
+import '../light_storage.dart';
 
 abstract class Tab {
   Tab({required this.storage, required this.name});

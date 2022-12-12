@@ -2,10 +2,10 @@ import 'dart:html';
 
 import 'package:file_system_access_api/file_system_access_api.dart';
 
+import '../index.dart';
+import '../light_storage.dart';
+import '../tree/view_directory_node.dart';
 import 'abstract_tab.dart';
-import 'index.dart';
-import 'light_storage.dart';
-import 'tree/view_directory_node.dart';
 
 class TreeViewerTab extends Tab {
   TreeViewerTab(final LightStorage storage) : super(storage: storage, name: "tree");

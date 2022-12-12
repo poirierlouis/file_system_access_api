@@ -5,8 +5,8 @@ import 'dart:typed_data';
 
 import 'package:file_system_access_api/file_system_access_api.dart';
 
+import '../light_storage.dart';
 import 'abstract_tab.dart';
-import 'light_storage.dart';
 
 class ImageViewerTab extends Tab {
   ImageViewerTab(final LightStorage storage) : super(storage: storage, name: "viewer");

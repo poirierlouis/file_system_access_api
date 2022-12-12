@@ -2,12 +2,12 @@ import 'dart:html';
 
 import 'package:file_system_access_api/file_system_access_api.dart';
 
+import '../index.dart';
+import '../light_storage.dart';
+import '../tree/view_directory_menu.dart';
+import '../tree/view_directory_node.dart';
+import '../tree/view_file_menu.dart';
 import 'abstract_tab.dart';
-import 'index.dart';
-import 'light_storage.dart';
-import 'tree/view_directory_menu.dart';
-import 'tree/view_directory_node.dart';
-import 'tree/view_file_menu.dart';
 
 class OpfsEditorTab extends Tab {
   OpfsEditorTab(final LightStorage storage) : super(storage: storage, name: "opfs");
