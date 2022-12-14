@@ -10,9 +10,11 @@ It shows how to:
 To view the examples, run the following command from the root directory of this project – the directory containing 
 `pubspec.yaml`:
 ```shell
-$ dart run webdev serve example:4242
+$ dart run webdev serve example:4242 --release
 ```
 
 Remove `:4242` to start server on default port 8080 or use any other port you wish.
+
+Use option `--release` to try `Web Worker` tab. In debug mode, trying to run with a Web Worker will fail.
 
 You can view it with any compatible browsers (Chrome, Edge and Opera).
