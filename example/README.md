@@ -5,6 +5,9 @@ It shows how to:
 - pick a file with only image types and draw image in a `<img />` tag.
 - a minimal text editor to create, open and save text files.
 - a tree viewer to dynamically list content of a directory and open image/text files in above tools.
+- a "tree viewer" in Origin Private File System with features to create, move, rename and delete files and directories.
+- a dummy encoder/decoder which takes a file from user's file system, send it into OPFS, executes encoder in a Web 
+Worker (using Synchronous Access) and write back the file to user's file system.
 
 # Usage
 To view the examples, run the following command from the root directory of this project – the directory containing 
