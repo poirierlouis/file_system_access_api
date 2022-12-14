@@ -31,7 +31,7 @@ class TreeViewerTab extends Tab {
       return;
     }
     final handle = await storage.get("tree-recent");
-    final directory = FileSystemAccess.fromNative(handle);
+    final directory = handle as FileSystemDirectoryHandle?;
 
     if (directory is! FileSystemDirectoryHandle) {
       return;
@@ -57,7 +57,7 @@ class TreeViewerTab extends Tab {
       final directory = await window.showDirectoryPicker(mode: PermissionMode.read);
 
       await showTree(directory);
-      await storage.set("tree-recent", directory.toNative());
+      await storage.set("tree-recent", directory);
     } on AbortError {
       window.alert("User dismissed dialog or picked a directory deemed too sensitive or dangerous.");
     } catch (error) {
