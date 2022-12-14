@@ -107,6 +107,7 @@ export 'src/api/file_system_directory_handle.dart';
 export 'src/api/file_system_file_handle.dart';
 export 'src/api/file_system_handle.dart';
 export 'src/api/file_system_kind.dart';
+export 'src/api/file_system_sync_access_handle.dart';
 export 'src/api/permissions.dart';
 export 'src/api/well_known_directory.dart';
 export 'src/file_system_access_base.dart';

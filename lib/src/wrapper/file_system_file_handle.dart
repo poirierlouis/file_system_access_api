@@ -4,9 +4,11 @@ import 'dart:typed_data';
 import 'package:file_system_access_api/src/api/errors.dart';
 import 'package:file_system_access_api/src/api/file_system_directory_handle.dart' as api1;
 import 'package:file_system_access_api/src/api/file_system_file_handle.dart' as api0;
+import 'package:file_system_access_api/src/api/file_system_sync_access_handle.dart' as api2;
 import 'package:file_system_access_api/src/interop/file_system_file_handle.dart' as interop0;
 import 'package:file_system_access_api/src/interop/interop_utils.dart';
 import 'package:file_system_access_api/src/wrapper/file_system_handle.dart' as wrapper0;
+import 'package:file_system_access_api/src/wrapper/file_system_sync_access_handle.dart' as wrapper1;
 import 'package:js/js_util.dart' as js;
 
 class FileSystemFileHandle extends wrapper0.FileSystemHandle implements api0.FileSystemFileHandle {
@@ -41,6 +43,27 @@ class FileSystemFileHandle extends wrapper0.FileSystemHandle implements api0.Fil
       return FileSystemWritableFileStream(stream);
     } catch (error) {
       if (jsIsNativeError(error, "NotAllowedError")) {
+        throw NotAllowedError();
+      } else if (jsIsNativeError(error, "NotFoundError")) {
+        throw NotFoundError();
+      } else {
+        rethrow;
+      }
+    }
+  }
+
+  @override
+  Future<api2.FileSystemSyncAccessHandle> createSyncAccessHandle() async {
+    try {
+      dynamic syncHandle = await js.promiseToFuture(_handle.createSyncAccessHandle());
+
+      return wrapper1.FileSystemSyncAccessHandle(syncHandle);
+    } catch (error) {
+      if (jsIsNativeError(error, "InvalidStateError")) {
+        throw InvalidStateError();
+      } else if (jsIsNativeError(error, "NoModificationAllowedError")) {
+        throw NoModificationAllowedError();
+      } else if (jsIsNativeError(error, "NotAllowedError")) {
         throw NotAllowedError();
       } else if (jsIsNativeError(error, "NotFoundError")) {
         throw NotFoundError();

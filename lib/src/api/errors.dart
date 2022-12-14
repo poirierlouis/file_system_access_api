@@ -21,3 +21,12 @@ class NotFoundError {}
 
 /// Thrown if a file / directory picker is shown without prior user gesture (e.g. click event).
 class SecurityError {}
+
+/// Thrown if the [FileSystemSyncAccessHandle] object does not represent a file in the origin private file system.
+class InvalidStateError {}
+
+/// Thrown if the browser is not able to acquire a lock on the file associated with the file handle.
+class NoModificationAllowedError {}
+
+/// Thrown if the newSize is larger than the original size of the file, and exceeds the browser's storage quota.
+class QuotaExceededError {}

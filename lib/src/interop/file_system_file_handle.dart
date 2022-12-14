@@ -1,6 +1,7 @@
 import 'dart:html' as html show File;
 
 import 'package:file_system_access_api/src/interop/file_system_handle.dart';
+import 'package:file_system_access_api/src/interop/file_system_sync_access_handle.dart';
 import 'package:file_system_access_api/src/interop/interop_utils.dart';
 import 'package:js/js.dart';
 
@@ -8,6 +9,7 @@ import 'package:js/js.dart';
 class FileSystemFileHandle extends FileSystemHandle {
   external Promise<html.File> getFile();
   external Promise<FileSystemWritableFileStream> createWritable([FileSystemCreateWritableOptions? options]);
+  external Promise<FileSystemSyncAccessHandle> createSyncAccessHandle();
   external Promise<void> move(dynamic nameOrDirectory, [String? name]);
 }
 

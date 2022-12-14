@@ -1,7 +1,9 @@
 import 'dart:html' as html show File, Blob;
 import 'dart:typed_data';
 
-import 'package:file_system_access_api/file_system_access_api.dart';
+import 'package:file_system_access_api/src/api/file_system_directory_handle.dart';
+import 'package:file_system_access_api/src/api/file_system_handle.dart';
+import 'package:file_system_access_api/src/api/file_system_sync_access_handle.dart';
 
 /// Represents a handle to a file system entry.
 /// The interface is accessed through the [FileSystemAccess.showOpenFilePicker] method.
@@ -35,6 +37,22 @@ abstract class FileSystemFileHandle implements FileSystemHandle {
   /// Throws a [NotAllowedError] if the state for the handle is not [PermissionState.granted] in readwrite mode.
   /// Throws a [NotFoundError] if this requested file could not be found at the time operation was processed.
   Future<FileSystemWritableFileStream> createWritable({bool keepExistingData = false});
+
+  /// Returns a [Future] which resolves to a [FileSystemSyncAccessHandle] object that can be used to synchronously read
+  /// from and write to a file. The synchronous nature of this method brings performance advantages, but it is only
+  /// usable inside dedicated [Web Workers] for files within the origin private file system.
+  ///
+  /// Creating a [FileSystemSyncAccessHandle] takes an exclusive lock on the file associated with the file handle. This
+  /// prevents the creation of further [FileSystemSyncAccessHandle]s or [FileSystemWritableFileStream]s for the file
+  /// until the existing access handle is closed.
+  ///
+  /// Throws an [InvalidStateError] if the [FileSystemSyncAccessHandle] object does not represent a file in the origin
+  /// private file system.
+  /// Throws a [NoModificationAllowedError] if the browser is not able to acquire a lock on the file associated with the
+  /// file handle.
+  /// Throws a [NotAllowedError] if the state for the handle is not [PermissionState.granted] in readwrite mode.
+  /// Throws a [NotFoundError] if this requested file could not be found at the time operation was processed.
+  Future<FileSystemSyncAccessHandle> createSyncAccessHandle();
 
   /// Rename file to [name].
   ///
