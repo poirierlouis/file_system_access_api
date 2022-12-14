@@ -117,9 +117,9 @@ void main() async {
     // List of handles in a directory emitted with a [Stream].
     // Listen periodically on [Stream] to reproduce a file system watch-like feature.
     await for (FileSystemHandle handle in directory.values) {
-      if (handle is FileSystemFileHandle) {
+      if (handle.kind == FileSystemKind.file) {
         print("<file name='${handle.name}' />");
-      } else if (handle is FileSystemDirectoryHandle) {
+      } else if (handle.kind == FileSystemKind.directory) {
         print("<directory name='${handle.name}/' />");
         // You can create, move and delete files/directories. See example/ for more on this.
       }
@@ -185,6 +185,56 @@ void main() {
       print("<${handle.kind.name} name='${handle.name}' />");
     }
   });
+}
+```
+
+### How to cast a FileSystemHandle
+**DON'T** test and cast using `is` keyword:
+```dart
+FileSystemHandle handle;
+
+if (handle is FileSystemFileHandle) {
+  print("will always return false");
+} else if (handle is FileSystemDirectoryHandle) {
+  print("will always return false");
+}
+```
+
+**DO** test and cast using `FileSystemHandle.kind`:
+```dart
+FileSystemHandle handle;
+
+if (handle.kind == FileSystemKind.file) {
+  final file = handle as FileSystemFileHandle;
+  
+  print("handle is a file");
+} else if (handle.kind == FileSystemKind.directory) {
+  final directory = handle as FileSystemDirectoryHandle;
+  
+  print("handle is a directory.");
+}
+```
+
+### How to compare FileSystemHandle(s)
+**DON'T** compare using `==` operator or `hashCode` property:
+```dart
+FileSystemFileHandle a;
+FileSystemFileHandle b;
+
+if (a == b) {
+  print("will return false even when a and b represents the same file entry.");
+}
+```
+
+**DO** compare using `FileSystemHandle.isSameEntry`:
+```dart
+void main() async {
+  FileSystemFileHandle a;
+  FileSystemFileHandle b;
+
+  if (await a.isSameEntry(b)) {
+    print("return true when a and b represents the same file entry.");
+  }
 }
 ```
 
