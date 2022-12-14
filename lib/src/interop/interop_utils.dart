@@ -3,9 +3,6 @@ import 'dart:html';
 import 'package:js/js.dart';
 import 'package:js/js_util.dart';
 
-/// To keep track of types of the API in interop declarations.
-typedef Promise<T> = dynamic;
-
 /// Declare undefined JavaScript type in Dart.
 // I'm positive I don't want void.
 @JS()

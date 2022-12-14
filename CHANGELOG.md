@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- call to read/write methods of a FileSystemSyncAccessHandle now correctly sends 'offset' option to native method.
+
+### Removed
+- FileSystemAccess.fromNative() and FileSystemHandle.toNative() methods as it is now obsolete.
+
+### Changed
+- internal structure to use plain js-interop extensions instead of custom wrappers.
 
 ## [0.2.0] - 2022-12-14
 ### Added

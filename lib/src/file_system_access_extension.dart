@@ -1,13 +1,16 @@
 import 'dart:async';
 import 'dart:html';
 
-import 'package:file_system_access_api/file_system_access_api.dart';
-import 'package:file_system_access_api/src/interop/file_picker_accept_type.dart' as interop0;
-import 'package:file_system_access_api/src/interop/file_picker_options.dart' as interop1;
+import 'package:file_system_access_api/src/api/errors.dart';
+import 'package:file_system_access_api/src/api/file_picker_accept_type.dart';
+import 'package:file_system_access_api/src/api/file_system_directory_handle.dart';
+import 'package:file_system_access_api/src/api/file_system_file_handle.dart';
+import 'package:file_system_access_api/src/api/file_system_handle.dart';
+import 'package:file_system_access_api/src/api/permissions.dart';
+import 'package:file_system_access_api/src/api/well_known_directory.dart';
+import 'package:file_system_access_api/src/interop/file_picker_accept_type.dart';
+import 'package:file_system_access_api/src/interop/file_picker_options.dart';
 import 'package:file_system_access_api/src/interop/interop_utils.dart';
-import 'package:file_system_access_api/src/wrapper/file_system_directory_handle.dart' as wrapper1;
-import 'package:file_system_access_api/src/wrapper/file_system_file_handle.dart' as wrapper0;
-import 'package:file_system_access_api/src/wrapper/file_system_handle.dart' as wrapper2;
 import 'package:js/js_util.dart' as js;
 
 extension WindowFileSystemAccess on Window {
@@ -44,7 +47,7 @@ extension WindowFileSystemAccess on Window {
     id = args[0];
     startIn = args[1];
 
-    final options = interop1.OpenFilePickerOptions(
+    final options = OpenFilePickerOptions(
       multiple: multiple,
       types: interopTypes,
       excludeAcceptAllOption: excludeAcceptAllOption,
@@ -54,7 +57,7 @@ extension WindowFileSystemAccess on Window {
     try {
       final List<dynamic> handles = await js.promiseToFuture(js.callMethod(this, "showOpenFilePicker", [options]));
 
-      return handles.map((handle) => wrapper0.FileSystemFileHandle(handle)).toList(growable: false);
+      return handles.map((handle) => handle as FileSystemFileHandle).toList(growable: false);
     } catch (error) {
       if (jsIsNativeError(error, "AbortError")) {
         throw AbortError();
@@ -101,7 +104,7 @@ extension WindowFileSystemAccess on Window {
     startIn = args[1];
     suggestedName ??= undefined;
 
-    final interopOptions = interop1.SaveFilePickerOptions(
+    final options = SaveFilePickerOptions(
       suggestedName: suggestedName,
       types: interopTypes,
       excludeAcceptAllOption: excludeAcceptAllOption,
@@ -110,9 +113,9 @@ extension WindowFileSystemAccess on Window {
     );
 
     try {
-      final dynamic handle = await js.promiseToFuture(js.callMethod(this, "showSaveFilePicker", [interopOptions]));
+      final dynamic handle = await js.promiseToFuture(js.callMethod(this, "showSaveFilePicker", [options]));
 
-      return wrapper0.FileSystemFileHandle(handle);
+      return handle as FileSystemFileHandle;
     } catch (error) {
       if (jsIsNativeError(error, "AbortError")) {
         throw AbortError();
@@ -151,7 +154,7 @@ extension WindowFileSystemAccess on Window {
     id = args[0];
     startIn = args[1];
 
-    final options = interop1.DirectoryPickerOptions(
+    final options = DirectoryPickerOptions(
       id: id,
       startIn: startIn,
       mode: mode.name,
@@ -160,7 +163,7 @@ extension WindowFileSystemAccess on Window {
     try {
       final dynamic handle = await js.promiseToFuture(js.callMethod(this, "showDirectoryPicker", [options]));
 
-      return wrapper1.FileSystemDirectoryHandle(handle);
+      return handle as FileSystemDirectoryHandle;
     } catch (error) {
       if (jsIsNativeError(error, "AbortError")) {
         throw AbortError();
@@ -173,9 +176,9 @@ extension WindowFileSystemAccess on Window {
   }
 
   /// Converts [FilePickerAcceptType] from Dart type to JS equivalent using interoperability.
-  static List<interop0.FilePickerAcceptType> _toInteropAcceptType(final List<FilePickerAcceptType> types) {
+  static List<FilePickerAcceptTypeOption> _toInteropAcceptType(final List<FilePickerAcceptType> types) {
     return types
-        .map((type) => interop0.FilePickerAcceptType(
+        .map((type) => FilePickerAcceptTypeOption(
               description: type.description,
               accept: mapToJsObject(type.accept),
             ))
@@ -199,7 +202,7 @@ extension WindowFileSystemAccess on Window {
       throw "startIn must be a WellKnownDirectory or a FileSystemHandle.";
     }
     if (startIn is FileSystemHandle) {
-      startIn = (startIn as wrapper2.FileSystemHandle).handle;
+      startIn = startIn as dynamic;
     } else if (startIn is WellKnownDirectory) {
       startIn = startIn.name;
     }

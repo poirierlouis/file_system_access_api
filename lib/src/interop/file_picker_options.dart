@@ -4,13 +4,13 @@ import 'package:js/js.dart';
 @JS()
 @anonymous
 abstract class FilePickerOptions {
-  external List<FilePickerAcceptType>? get types;
+  external List<FilePickerAcceptTypeOption>? get types;
   external bool get excludeAcceptAllOption;
   external String? get id;
   external dynamic get startIn;
 
   external factory FilePickerOptions({
-    List<FilePickerAcceptType>? types,
+    List<FilePickerAcceptTypeOption>? types,
     bool excludeAcceptAllOption = false,
     String? id,
     dynamic startIn,
@@ -24,7 +24,7 @@ class OpenFilePickerOptions extends FilePickerOptions {
 
   external factory OpenFilePickerOptions({
     bool multiple = false,
-    List<FilePickerAcceptType>? types,
+    List<FilePickerAcceptTypeOption>? types,
     bool excludeAcceptAllOption = false,
     String? id,
     dynamic startIn,
@@ -38,7 +38,7 @@ class SaveFilePickerOptions extends FilePickerOptions {
 
   external factory SaveFilePickerOptions({
     String? suggestedName,
-    List<FilePickerAcceptType>? types,
+    List<FilePickerAcceptTypeOption>? types,
     bool excludeAcceptAllOption = false,
     String? id,
     dynamic startIn,

@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:html';
 
-import 'package:file_system_access_api/file_system_access_api.dart';
+import 'package:file_system_access_api/src/api/errors.dart';
+import 'package:file_system_access_api/src/api/file_system_directory_handle.dart';
 import 'package:file_system_access_api/src/interop/interop_utils.dart';
-import 'package:file_system_access_api/src/wrapper/file_system_directory_handle.dart' as wrapper1;
 import 'package:js/js_util.dart' as js;
 
 extension StorageManagerOriginPrivateFileSystem on StorageManager {
@@ -17,7 +17,7 @@ extension StorageManagerOriginPrivateFileSystem on StorageManager {
     try {
       final handle = await js.promiseToFuture(js.callMethod(this, "getDirectory", []));
 
-      return wrapper1.FileSystemDirectoryHandle(handle);
+      return handle as FileSystemDirectoryHandle;
     } catch (error) {
       if (jsIsNativeError(error, "SecurityError")) {
         throw SecurityError();

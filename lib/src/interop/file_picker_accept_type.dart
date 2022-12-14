@@ -2,11 +2,11 @@ import 'package:js/js.dart';
 
 @JS()
 @anonymous
-class FilePickerAcceptType {
+class FilePickerAcceptTypeOption {
   external String? get description;
   external dynamic get accept;
 
-  external factory FilePickerAcceptType({
+  external factory FilePickerAcceptTypeOption({
     String? description,
     dynamic accept,
   });
