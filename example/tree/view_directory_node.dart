@@ -181,7 +181,7 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
     final directory = parent!.handle;
 
     await directory.removeEntry(handle.name, recursive: true);
-    (parent! as ViewDirectoryNode).removeChild(this);
+    parent!.removeChild(this);
   }
 
   @override
