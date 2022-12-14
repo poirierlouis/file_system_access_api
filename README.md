@@ -238,11 +238,27 @@ void main() async {
 }
 ```
 
-## Missing features
+## [Synchronous access in Web Workers]
+> Applies only within a Web Worker and Origin Private File System for now.
 
-### [Synchronous access in Web Workers]
-There is no wrapper around this JavaScript feature for now.
-> - FileSystemFileHandle.createSyncAccessHandle()
+You can get an interface to synchronously read from and write to a file. This will create an exclusive lock on the file 
+associated with the file handle, until it is closed:
+```dart
+// Code executed within a Web Worker
+void main() async {
+  FileSystemDirectoryHandle root;
+  
+  FileSystemFileHandle source = await root.getFileHandle("linux.iso");
+  FileSystemSyncAccessHandle src = await source.createSyncAccessHandle();
+  Uint8List buffer = Uint8List(src.getSize());
+  
+  src.read(buffer);
+  src.close();
+  print(buffer);
+}
+```
+
+## Missing features
 
 ### [Origin Private File System]
 There is no wrapper around this JavaScript feature for now:

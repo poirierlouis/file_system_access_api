@@ -1,12 +1,16 @@
 import 'dart:html';
+import 'dart:typed_data';
 
 import 'package:file_system_access_api/file_system_access_api.dart';
+import 'package:js/js.dart';
+import 'package:js/js_util.dart' as js;
 
 void main() async {
   await pickFiles();
   await pickDirectory();
   await pickNewFile();
   await originPrivateFileSystem();
+  await webWorker();
 }
 
 /// Pick files and append text in each file.
@@ -73,4 +77,35 @@ Future<void> originPrivateFileSystem() async {
 
   // Move back and rename
   await handle.move(root, name: "pubspec.yaml");
+}
+
+/// Declare navigator like in a Web Worker context.
+@JS()
+external dynamic get navigator;
+
+/// Web Worker, copies a file to another one within Origin Private File System.
+Future<void> webWorker() async {
+  // Cast to use library's extension, when building in a Web Worker.
+  StorageManager? storage = js.getProperty(navigator, "storage") as StorageManager?;
+  FileSystemDirectoryHandle? root = await storage?.getDirectory();
+
+  if (root == null) {
+    return;
+  }
+  final source = await root.getFileHandle("linux.iso");
+  final destination = await root.getFileHandle("xunil.iso", create: true);
+
+  if (source == null || destination == null) {
+    return;
+  }
+  FileSystemSyncAccessHandle src = await source.createSyncAccessHandle();
+  FileSystemSyncAccessHandle dst = await destination.createSyncAccessHandle();
+  Uint8List buffer = Uint8List(src.getSize());
+
+  src.read(buffer);
+  dst.write(buffer);
+  dst.flush();
+
+  src.close();
+  dst.close();
 }
