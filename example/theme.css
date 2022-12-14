@@ -170,6 +170,11 @@ input {
     border-radius: 4px;
 }
 
+label {
+    font-size: 1.25rem;
+    color: var(--text-color);
+}
+
 section#editor textarea {
     width: 60%;
     height: 60vw;
@@ -196,6 +201,10 @@ div#root div {
 
 [clickable="true"] {
     cursor: pointer;
+}
+
+.row {
+    display: flex;
 }
 
 .text-center {
@@ -316,4 +325,27 @@ dialog form button {
 
 .menu div:hover {
     background-color: var(--surface-light-color);
+}
+
+.progress {
+    width: 50%;
+    text-align: center;
+}
+
+.progress div {
+    position: relative;
+    height: 24px;
+}
+
+.progress #done {
+    width: 0;
+    top: -24px;
+
+    background-color: var(--secondary-color);
+}
+
+.progress #remaining {
+    width: 100%;
+
+    background-color: var(--secondary-disabled-color);
 }

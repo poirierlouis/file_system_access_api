@@ -3,6 +3,7 @@ import 'dart:html';
 import 'light_storage.dart';
 import 'tabs/about_tab.dart';
 import 'tabs/abstract_tab.dart';
+import 'tabs/compression_tab.dart';
 import 'tabs/image_viewer_tab.dart';
 import 'tabs/opfs_editor_tab.dart';
 import 'tabs/text_editor_tab.dart';
@@ -18,6 +19,7 @@ class View {
   late final TextEditorTab textEditor;
   late final TreeViewerTab treeViewer;
   late final OpfsEditorTab opfsEditor;
+  late final CompressionTab compression;
 
   late final HtmlElement $header = querySelector("header") as HtmlElement;
   late final HtmlElement $unsupported = querySelector("#unsupported") as HtmlElement;
@@ -31,12 +33,14 @@ class View {
     textEditor = TextEditorTab(db);
     treeViewer = TreeViewerTab(db);
     opfsEditor = OpfsEditorTab(db);
+    compression = CompressionTab(db);
 
     tabs["about"] = AboutTab(db);
     tabs["viewer"] = imageViewer;
     tabs["editor"] = textEditor;
     tabs["tree"] = treeViewer;
     tabs["opfs"] = opfsEditor;
+    tabs["compression"] = compression;
 
     for (final tab in tabs.values) {
       tab.$btn.onClick.listen((event) => selectTab(tab.name));

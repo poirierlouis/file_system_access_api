@@ -17,6 +17,7 @@
         <a href="#editor">Text editor</a>
         <a href="#tree">Tree viewer</a>
         <a href="#opfs"><abbr title="Origin Private File System">OPFS</abbr></a>
+        <a href="#compression">Web Worker</a>
     </header>
 
     <section id="unsupported" style="display:none">
@@ -156,6 +157,29 @@
                 <span class="material-symbols-outlined" color="error">delete</span>
                 Delete
             </div>
+        </div>
+    </section>
+
+    <section id="compression" style="display:none">
+        <div>
+            <button id="btn-open">Open a file</button>
+            <button id="btn-encode" disabled>Encode to</button>
+            <button id="btn-decode" disabled>Decode to</button>
+        </div>
+
+        <div class="row">
+            <div id="source" class="card card-expand" style="display:none">
+                <p>Filename: <span id="file-name"></span></p>
+                <p>Type: <span id="file-type"></span></p>
+                <p>Size: <span id="file-size"></span> bytes</p>
+            </div>
+        </div>
+
+        <div id="progress" class="progress" style="display:none">
+            <label id="status"></label>
+            <div id="remaining"></div>
+            <div id="done"></div>
+            <label id="percentage">? %</label>
         </div>
     </section>
 </body>
