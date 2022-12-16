@@ -1,6 +1,6 @@
 name: file_system_access_api
 description: A Dart library to expose the File System Access Api from web platform.
-version: 0.2.0
+version: 1.0.0
 homepage: https://github.com/poirierlouis/file_system_access_api/
 
 environment:
