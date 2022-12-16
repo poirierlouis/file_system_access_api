@@ -9,6 +9,9 @@ build/
 # https://dart.dev/guides/libraries/private-files#pubspeclock.
 pubspec.lock
 
+# Omit API documentation
+/doc/api/
+
 # IntelliJ IDEA
 .idea/
 *.iml
