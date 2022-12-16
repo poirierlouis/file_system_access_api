@@ -11,9 +11,13 @@ Due to internal refactoring, expect breaking changes with this version. See belo
 
 ### Fixed
 - call to read/write methods of a FileSystemSyncAccessHandle now correctly sends 'offset' option to native method.
+- API documentation using Dart Doc styles.
 
 ### Removed
 - `FileSystemAccess.fromNative` and `FileSystemHandle.toNative` methods as it is now obsolete.
+
+### Added
+- documentation on how to check if browser supports API.
 
 ### Changed
 - internal structure to use plain js-interop extensions instead of custom wrappers.
