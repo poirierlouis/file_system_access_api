@@ -39,10 +39,6 @@ JavaScript API.
 ### Open file(s)
 You can ask a user to open file(s) with the method `window.showOpenFilePicker()` and access selected files like this:
 ```dart
-import 'dart:html';
-
-import 'package:file_system_access_api/file_system_access_api.dart';
-
 void main() async {
   try {
     List<FileSystemFileHandle> handles = await window.showOpenFilePicker(
@@ -69,10 +65,6 @@ void main() async {
 You can ask a user where to save a file with the method `window.showSaveFilePicker()` and write in the selected file 
 like this:
 ```dart
-import 'dart:html';
-
-import 'package:file_system_access_api/file_system_access_api.dart';
-
 void main() async {
   try {
     FileSystemFileHandle handle = await window.showSaveFilePicker(
@@ -103,10 +95,6 @@ void main() async {
 You can ask a user to pick a directory `window.showDirectoryPicker()` and recursively access files and directories like 
 this:
 ```dart
-import 'dart:html';
-
-import 'package:file_system_access_api/file_system_access_api.dart';
-
 void main() async {
   try {
     FileSystemDirectoryHandle directory = await window.showDirectoryPicker(
@@ -134,10 +122,6 @@ void main() async {
 You can query / request permission on files and directories from the user. It allows you to write in files, modify a 
 directory structure, etc. Those methods are available per file/directory handle:
 ```dart
-import 'dart:html';
-
-import 'package:file_system_access_api/file_system_access_api.dart';
-
 void main() async {
   try {
     final handles = await window.showOpenFilePicker(multiple: false);
@@ -168,10 +152,6 @@ void main() async {
 ### Drag and Drop
 You can get files/directories from a drag-n-drop event:
 ```dart
-import 'dart:html';
-
-import 'package:file_system_access_api/file_system_access_api.dart';
-
 void main() {
   final $area = document.querySelector("#area") as DivElement;
   
