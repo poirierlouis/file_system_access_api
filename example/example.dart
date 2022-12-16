@@ -6,6 +6,10 @@ import 'package:js/js.dart';
 import 'package:js/js_util.dart' as js;
 
 void main() async {
+  // Check current browser supports API.
+  if (!FileSystemAccess.supported) {
+    return;
+  }
   await pickFiles();
   await pickDirectory();
   await pickNewFile();
