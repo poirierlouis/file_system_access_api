@@ -78,7 +78,7 @@ extension JSFileSystemFileHandle on FileSystemFileHandle {
 
   /// Returns a [Future] which resolves to a [FileSystemSyncAccessHandle] object that can be used to synchronously read
   /// from and write to a file. The synchronous nature of this method brings performance advantages, but it is only
-  /// usable inside dedicated [Web Workers] for files within the origin private file system.
+  /// usable inside dedicated Web [Worker]s for files within the origin private file system.
   ///
   /// Creating a [FileSystemSyncAccessHandle] takes an exclusive lock on the file associated with the file handle. This
   /// prevents the creation of further [FileSystemSyncAccessHandle]s or [FileSystemWritableFileStream]s for the file
@@ -314,8 +314,8 @@ extension JSWritableStreamDefaultWriter on WritableStreamDefaultWriter {
   /// Returns the desired size required to fill the stream's internal queue. Note that this can be negative if the queue
   /// is over-full.
   ///
-  /// The value will be [null] if the stream cannot be successfully written to (due to either being errored, or having
-  /// an abort queued up), and zero if the stream is closed.
+  /// The value will be null if the stream cannot be successfully written to (due to either being errored, or having an
+  /// abort queued up), and zero if the stream is closed.
   external double? get desiredSize;
 
   /// Returns a [Future] that resolves when the desired size of the stream's internal queue transitions from

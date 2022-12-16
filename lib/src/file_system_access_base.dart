@@ -14,7 +14,7 @@ class FileSystemAccess {
         js.hasProperty(window, "showDirectoryPicker");
   }
 
-  /// Returns a list of [FileSystemHandle] from [items] of a [DragEvent].
+  /// Returns a list of [FileSystemHandle] from items of a DragEvent.
   static Future<List<FileSystemHandle>> fromDropEvent(Event event) async {
     final dataTransfer = js.getProperty(event, "dataTransfer");
     final items = js.getProperty(dataTransfer, "items");
@@ -22,9 +22,9 @@ class FileSystemAccess {
     if (items == null || items == undefined) {
       return [];
     }
-    // Iterate on each future of [getAsFileSystemHandle] first.
+    // Iterate on each future of [DataTransferItem.getAsFileSystemHandle] first.
     // Awaiting in each iteration provokes an unknown behavior where only one element can be read, all other items
-    // becoming [null] instead of being a [DataTransferItem].
+    // becoming null instead of being a [DataTransferItem].
     final List<Future<dynamic>> futures = [];
 
     for (int i = 0; i < items.length; i++) {

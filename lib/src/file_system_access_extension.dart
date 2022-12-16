@@ -17,16 +17,15 @@ extension WindowFileSystemAccess on Window {
   /// Shows a file picker that allows a user to select a file or multiple files and returns a handle for the file(s).
   /// The user has to interact with the page or a UI element in order for this feature to work.
   ///
-  /// [multiple]: [true] to allow multiple files selection, default to [false].
+  /// [multiple]: true to allow multiple files selection, default to false.
   ///
-  /// [excludeAcceptAllOption]: [true] to remove default "All files (.*)" filter, default to [false].
+  /// [excludeAcceptAllOption]: true to remove default "All files (.*)" filter, default to false.
   ///
   /// [types]: list of [FilePickerAcceptType] to provide list of accepted filters, default to an empty [List].
   ///
-  /// [id]: unique string reference to suggest the directory in which the file picker opens, default to
-  /// [null].
+  /// [id]: unique string reference to suggest the directory in which the file picker opens, default to null.
   ///
-  /// [startIn]: suggest the directory in which the file picker opens, default to [null]. It must be a
+  /// [startIn]: suggest the directory in which the file picker opens, default to null. It must be a
   /// [WellKnownDirectory] or a [FileSystemHandle] when provided.
   ///
   /// Return a [Future] whose fulfillment handler receives a [List] of [FileSystemFileHandle] objects.
@@ -73,16 +72,15 @@ extension WindowFileSystemAccess on Window {
   /// for a new file.
   /// The user has to interact with the page or a UI element in order for this feature to work.
   ///
-  /// [suggestedName]: the suggested file name, default to [null].
+  /// [suggestedName]: the suggested file name, default to null.
   ///
-  /// [excludeAcceptAllOption]: [true] to remove default "All files (.*)" filter, default to [false].
+  /// [excludeAcceptAllOption]: true to remove default "All files (.*)" filter, default to false.
   ///
   /// [types]: list of [FilePickerAcceptType] to provide list of accepted filters, default to an empty [List].
   ///
-  /// [id]: unique string reference to suggest the directory in which the file picker opens, default to
-  /// [null].
+  /// [id]: unique string reference to suggest the directory in which the file picker opens, default to null.
   ///
-  /// [startIn]: suggest the directory in which the file picker opens, default to [null]. It must be a
+  /// [startIn]: suggest the directory in which the file picker opens, default to null. It must be a
   /// [WellKnownDirectory] or a [FileSystemHandle] when provided.
   ///
   /// Return a [Future] whose fulfillment handler receives a [FileSystemFileHandle] object.
@@ -130,10 +128,9 @@ extension WindowFileSystemAccess on Window {
   /// Shows a directory picker which allows the user to select a directory.
   /// The user has to interact with the page or a UI element in order for this feature to work.
   ///
-  /// [id]: unique string reference to suggest the directory in which the file picker opens, default to
-  /// [null].
+  /// [id]: unique string reference to suggest the directory in which the file picker opens, default to null.
   ///
-  /// [startIn]: suggest the directory in which the file picker opens, default to [null]. It must be a
+  /// [startIn]: suggest the directory in which the file picker opens, default to null. It must be a
   /// [WellKnownDirectory] or a [FileSystemHandle] when provided.
   ///
   /// [mode]: [PermissionMode.read] for read-only access or [PermissionMode.readwrite] for read and write access to the
