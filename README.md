@@ -6,8 +6,8 @@
 [![Donate](https://img.shields.io/badge/donate-buy%20me%20a%20coffee-yellow)](https://www.buymeacoffee.com/lpfreelance)
 
 A Dart library to expose the File System Access API from web platform.
-You can pick files and directories from user's local file system to read, write, create, move and delete files from Dart
-web apps.
+You can pick files and directories from user's file system to read, write, create, move and delete files/directories 
+from Dart web apps.
 
 > The web API (and this library) is experimental and is only supported on [Chrome, Edge and Opera browsers] for now.
 > It is not recommended to use this library in a production environment.
