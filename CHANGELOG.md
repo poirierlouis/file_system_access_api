@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ------------------------
 
+## [1.0.3] - 2022-12-17
+### Fixed
+- downgrade package 'js' from v0.6.5 to v0.6.4 to be compatible with `flutter_web_plugins` in Flutter projects.
+
+------------------------
+
 ## [1.0.2] - 2022-12-17
 ### Changed
 - nullable return type of `getFileHandle` and `getDirectoryHandle` in `FileSystemDirectoryHandle` to be non-nullable. 
@@ -94,7 +100,8 @@ if (handle.kind == FileSystemKind.file) {}
 - README and CHANGELOG.
 
 <!-- Table of releases -->
-[Unreleased]: https://github.com/poirierlouis/file_system_access_api/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/poirierlouis/file_system_access_api/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/poirierlouis/file_system_access_api/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/poirierlouis/file_system_access_api/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/poirierlouis/file_system_access_api/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/poirierlouis/file_system_access_api/compare/v0.2.0...v1.0.0
