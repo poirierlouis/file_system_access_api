@@ -70,9 +70,6 @@ Future<void> originPrivateFileSystem() async {
   final handle = await root.getFileHandle("pubspec.yaml", create: true);
   final directory = await root.getDirectoryHandle("lib", create: true);
 
-  if (handle == null || directory == null) {
-    return;
-  }
   // Rename file
   await handle.rename("main.dart");
 
@@ -96,20 +93,21 @@ Future<void> webWorker() async {
   if (root == null) {
     return;
   }
-  final source = await root.getFileHandle("linux.iso");
-  final destination = await root.getFileHandle("xunil.iso", create: true);
+  try {
+    final source = await root.getFileHandle("linux.iso");
+    final destination = await root.getFileHandle("xunil.iso", create: true);
 
-  if (source == null || destination == null) {
-    return;
+    FileSystemSyncAccessHandle src = await source.createSyncAccessHandle();
+    FileSystemSyncAccessHandle dst = await destination.createSyncAccessHandle();
+    Uint8List buffer = Uint8List(src.getSize());
+
+    src.read(buffer);
+    dst.write(buffer);
+    dst.flush();
+
+    src.close();
+    dst.close();
+  } on NotFoundError {
+    print("'linux.iso' file not found!");
   }
-  FileSystemSyncAccessHandle src = await source.createSyncAccessHandle();
-  FileSystemSyncAccessHandle dst = await destination.createSyncAccessHandle();
-  Uint8List buffer = Uint8List(src.getSize());
-
-  src.read(buffer);
-  dst.write(buffer);
-  dst.flush();
-
-  src.close();
-  dst.close();
 }
