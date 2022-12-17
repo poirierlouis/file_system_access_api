@@ -136,31 +136,31 @@ class CompressionTab extends Tab {
   /// Transfer file from / to Origin Private File System to use Synchronous Access in Web Worker.
   /// [send] true to send [src] file, false to read remote file in [src].
   Future<bool> transferOPFS(FileSystemFileHandle src, {required bool send}) async {
-    final remote = await _root!.getFileHandle(src.name, create: send);
+    try {
+      final remote = await _root!.getFileHandle(src.name, create: send);
+      String status;
 
-    if (remote == null) {
+      if (send) {
+        status = "Copying data to OPFS...";
+      } else {
+        status = "Copying data from OPFS...";
+      }
+      _updateStatusDOM(status);
+
+      final trx = (send) ? src : remote;
+      final twx = (send) ? remote : src;
+      final file = await trx.getFile();
+      final stream = await twx.createWritable();
+      final reader = FileReader();
+
+      reader.readAsArrayBuffer(file);
+      await reader.onLoad.first;
+      await stream.writeAsArrayBuffer(reader.result as Uint8List);
+      await stream.close();
+      return true;
+    } on NotFoundError {
       return false;
     }
-    String status;
-
-    if (send) {
-      status = "Copying data to OPFS...";
-    } else {
-      status = "Copying data from OPFS...";
-    }
-    _updateStatusDOM(status);
-
-    final trx = (send) ? src : remote;
-    final twx = (send) ? remote : src;
-    final file = await trx.getFile();
-    final stream = await twx.createWritable();
-    final reader = FileReader();
-
-    reader.readAsArrayBuffer(file);
-    await reader.onLoad.first;
-    await stream.writeAsArrayBuffer(reader.result as Uint8List);
-    await stream.close();
-    return true;
   }
 
   /// Remove [src] and [dst] files from Origin Private File System.

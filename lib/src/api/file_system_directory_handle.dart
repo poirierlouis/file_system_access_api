@@ -56,7 +56,7 @@ extension JSFileSystemDirectoryHandle on FileSystemDirectoryHandle {
   /// Throws a [TypeMismatchError] if the named entry is a directory and not a file.
   /// Throws a [NotFoundError] if file doesn't exist and the create option is set to false or this requested directory
   /// could not be found at the time operation was processed.
-  Future<FileSystemFileHandle?> getFileHandle(String name, {bool create = false}) async {
+  Future<FileSystemFileHandle> getFileHandle(String name, {bool create = false}) async {
     try {
       final options = [name, FileSystemGetFileOptions(create: create)];
       dynamic handle = await promiseToFuture(callMethod(this, "getFileHandle", options));
@@ -89,14 +89,11 @@ extension JSFileSystemDirectoryHandle on FileSystemDirectoryHandle {
   /// Throws a [TypeMismatchError] if the returned entry is a file and not a directory.
   /// Throws a [NotFoundError] if directory doesn't exist and the create option is set to false or this requested
   /// directory could not be found at the time operation was processed.
-  Future<FileSystemDirectoryHandle?> getDirectoryHandle(String name, {bool create = false}) async {
+  Future<FileSystemDirectoryHandle> getDirectoryHandle(String name, {bool create = false}) async {
     try {
       final options = [name, FileSystemGetDirectoryOptions(create: create)];
       dynamic handle = await promiseToFuture(callMethod(this, "getDirectoryHandle", options));
 
-      if (handle == null || handle == undefined) {
-        return null;
-      }
       return handle as FileSystemDirectoryHandle;
     } catch (error) {
       if (jsIsNativeError(error, "NotAllowedError")) {

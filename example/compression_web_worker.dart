@@ -61,10 +61,6 @@ void onStartAction(dynamic data) async {
     final src = await root.getFileHandle(srcFileName);
     final dst = await root.getFileHandle(dstFileName, create: true);
 
-    if (src == null || dst == null) {
-      sendAbort();
-      return;
-    }
     sendReady();
 
     final syncSrc = await src.createSyncAccessHandle();

@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
+- nullable return type of `getFileHandle` and `getDirectoryHandle` in `FileSystemDirectoryHandle` to be non-nullable. 
+Methods throw `NotFoundError` instead of returning `null`. ([issue #1])
 - bump package 'js' from v0.6.4 to v0.6.5.
 
 ------------------------
@@ -92,3 +94,6 @@ if (handle.kind == FileSystemKind.file) {}
 [1.0.0]: https://github.com/poirierlouis/file_system_access_api/compare/v0.2.0...v1.0.0
 [0.2.0]: https://github.com/poirierlouis/file_system_access_api/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/poirierlouis/file_system_access_api/releases/tag/v0.1.0
+
+<!-- Table of issues -->
+[issue #1]: https://github.com/poirierlouis/file_system_access_api/issues/1

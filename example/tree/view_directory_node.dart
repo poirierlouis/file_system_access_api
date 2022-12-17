@@ -126,10 +126,6 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
     }
     try {
       final directory = await handle.getDirectoryHandle(fileName, create: true);
-
-      if (directory == null) {
-        return;
-      }
       final node = ViewNode.fromHandle(directory, depth, parent: this, isPrivate: isPrivate);
 
       children.add(node);
@@ -152,10 +148,6 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
     }
     try {
       final file = await handle.getFileHandle(fileName, create: true);
-
-      if (file == null) {
-        return;
-      }
       final node = ViewNode.fromHandle(file, depth, parent: this, isPrivate: isPrivate);
 
       children.add(node);
