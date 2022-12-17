@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - nullable return type of `getFileHandle` and `getDirectoryHandle` in `FileSystemDirectoryHandle` to be non-nullable. 
 Methods throw `NotFoundError` instead of returning `null`. ([issue #1])
+- bump package 'js' from v0.6.4 to v0.6.5.
 
 ------------------------
 
