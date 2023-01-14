@@ -180,6 +180,20 @@ void main() {
 }
 ```
 
+### Remove handle
+> Experimental and non-standard.
+
+You can remove a file/directory directly from its handle, instead of using the handle of the parent directory:
+```dart
+void main() async {
+  FileSystemFileHandle file;
+  FileSystemDirectoryHandle directory;
+  
+  await file.remove();
+  await directory.remove(recursive: true);
+}
+```
+
 ### How to cast a FileSystemHandle
 **DON'T** test and cast using `is` keyword:
 ```dart
@@ -302,9 +316,7 @@ void main() async {
 
 ## Missing features
 
-### [Origin Private File System]
-There is no wrapper around this JavaScript feature for now:
-> - FileSystemHandle.remove()
+It's all good for now.
 
 ## Known issues
 
