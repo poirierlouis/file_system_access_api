@@ -46,6 +46,8 @@ Future<void> pickDirectory() async {
   // Iterable values might differ between calls depending on directory's content.
   await for (final handle in directory.values) {
     await directory.removeEntry(handle.name, recursive: handle.kind == FileSystemKind.directory);
+    // OR
+    await handle.remove(recursive: handle.kind == FileSystemKind.directory);
   }
 }
 
