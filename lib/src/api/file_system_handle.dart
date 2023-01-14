@@ -3,7 +3,10 @@ import 'dart:js_util';
 import 'package:file_system_access_api/src/api/file_system_kind.dart';
 import 'package:file_system_access_api/src/api/permissions.dart';
 import 'package:file_system_access_api/src/interop/file_system_options.dart';
+import 'package:file_system_access_api/src/interop/interop_utils.dart';
 import 'package:js/js.dart';
+
+import '../../file_system_access_api.dart';
 
 @JS()
 @staticInterop
@@ -41,6 +44,40 @@ extension JSFileSystemHandle on FileSystemHandle {
     final permission = await promiseToFuture(callMethod(this, "queryPermission", options));
 
     return PermissionState.values.byName(permission);
+  }
+
+  /// Requests removal of the entry represented by the handle from the underlying file system.
+  /// When [recursive] is set to true and the entry is a directory, its contents will be removed recursively.
+  ///
+  /// This allows you to remove a file or directory directly from its handle. Without this method, you would have to
+  /// obtain the handle of the parent directory, then call [FileSystemDirectoryHandle.removeEntry] on that to remove it.
+  ///
+  /// You can also call [remove] on the root directory of the Origin Private File System to clear its contents, after
+  /// which a new empty OPFS is created.
+  ///
+  /// Throws an [InvalidModificationError] if [recursive] is set to false and the entry to be removed is a directory
+  /// with children.
+  /// Throws a [NoModificationAllowedError] if the browser was not able to get an exclusive lock on the entry.
+  /// Throws a [NotAllowedError] if the state for the handle is not [PermissionState.granted].
+  /// Throws a [NotFoundError] if the entry is not found.
+  Future<void> remove({bool recursive = false}) async {
+    final options = [FileSystemRemoveOptions(recursive: recursive)];
+
+    try {
+      await promiseToFuture(callMethod(this, "remove", options));
+    } catch (error) {
+      if (jsIsNativeError(error, "InvalidModificationError")) {
+        throw InvalidModificationError();
+      } else if (jsIsNativeError(error, "NoModificationAllowedError")) {
+        throw NoModificationAllowedError();
+      } else if (jsIsNativeError(error, "NotAllowedError")) {
+        throw NotAllowedError();
+      } else if (jsIsNativeError(error, "NotFoundError")) {
+        throw NotFoundError();
+      } else {
+        rethrow;
+      }
+    }
   }
 
   /// Requests `read` or `readwrite` permissions for the file handle.
