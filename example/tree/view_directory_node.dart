@@ -79,8 +79,6 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
     if (parent != null) {
       $menu.$btnDelete.show();
       $menu.$btnDelete.onClick.listen((event) => onDelete());
-    } else {
-      $menu.$btnDelete.hide();
     }
   }
 
@@ -162,18 +160,27 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
   }
 
   void onDelete() async {
-    if (parent == null) {
-      return;
-    }
     final confirm = await ViewDialogConfirm.show(description: "Are you sure you want to remove this directory?");
 
     if (confirm != "true") {
       return;
     }
-    final directory = parent!.handle;
+    try {
+      await handle.remove(recursive: true);
+      parent!.removeChild(this);
+    } catch (error) {
+      if (jsIsDomError(error, "NoSuchMethodError")) {
+        final directory = parent?.handle;
 
-    await directory.removeEntry(handle.name, recursive: true);
-    parent!.removeChild(this);
+        if (directory == null) {
+          return;
+        }
+        await directory.removeEntry(handle.name, recursive: true);
+        parent!.removeChild(this);
+      } else {
+        window.alert(error.toString());
+      }
+    }
   }
 
   @override

@@ -15,6 +15,17 @@ extension HtmlElementState on HtmlElement {
   }
 }
 
+bool jsIsDomError(Object? error, String type) {
+  if (error is DomException) {
+    return error.name == type;
+  }
+  error = error?.toString();
+  if (error is! String) {
+    return false;
+  }
+  return error.contains(type);
+}
+
 final view = View();
 
 void main() async {

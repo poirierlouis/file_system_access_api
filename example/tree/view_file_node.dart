@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:file_system_access_api/file_system_access_api.dart';
 
+import '../index.dart';
 import 'view_dialog_confirm.dart';
 import 'view_dialog_form.dart';
 import 'view_drag_context.dart';
@@ -49,18 +50,27 @@ class ViewFileNode extends ViewNode<FileSystemFileHandle> {
   }
 
   void onDelete() async {
-    if (parent == null) {
-      return;
-    }
     final confirm = await ViewDialogConfirm.show(description: "Are you sure you want to remove this file?");
 
     if (confirm != "true") {
       return;
     }
-    final directory = parent!.handle;
+    try {
+      await handle.remove();
+      parent!.removeChild(this);
+    } catch (error) {
+      if (jsIsDomError(error, "NoSuchMethodError")) {
+        final directory = parent?.handle;
 
-    await directory.removeEntry(handle.name);
-    parent!.removeChild(this);
+        if (directory == null) {
+          return;
+        }
+        await directory.removeEntry(handle.name);
+        parent!.removeChild(this);
+      } else {
+        window.alert(error.toString());
+      }
+    }
   }
 
   @override
