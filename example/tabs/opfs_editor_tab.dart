@@ -30,7 +30,6 @@ class OpfsEditorTab extends Tab {
         $fileMenu.hide();
       }
     });
-    return load();
   }
 
   @override

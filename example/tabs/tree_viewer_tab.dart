@@ -37,7 +37,6 @@ class TreeViewerTab extends Tab {
         $fileMenu.hide();
       }
     });
-    return load();
   }
 
   @override

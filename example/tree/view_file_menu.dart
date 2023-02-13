@@ -1,5 +1,6 @@
 import 'dart:html';
 
+import '../index.dart';
 import 'view_actions_menu.dart';
 
 class ViewFileMenu extends ViewActionsMenu {
@@ -7,13 +8,15 @@ class ViewFileMenu extends ViewActionsMenu {
 
   final bool isPrivate;
 
-  DivElement get $btnRename => (isPrivate) ? $root.querySelector("#btn-rename") as DivElement : $root;
+  DivElement get $btnRename => $root.querySelector("#btn-rename") as DivElement;
   DivElement get $btnDelete => $root.querySelector("#btn-delete") as DivElement;
 
   @override
   void reset() {
     if (isPrivate) {
       $btnRename.remove();
+    } else {
+      $btnRename.hide();
     }
     $btnDelete.remove();
 

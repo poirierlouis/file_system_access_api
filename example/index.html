@@ -102,51 +102,6 @@
         <div id="loading" class="card card-info" style="display:none">
             Loading...
         </div>
-
-        <dialog id="form">
-            <form method="dialog">
-                <label>New directory</label>
-                <input type="text" placeholder="Name of folder" minlength="1" maxlength="255" />
-                <div class="actions">
-                    <button value="">Cancel</button>
-                    <button id="submit" disabled>Create</button>
-                </div>
-            </form>
-        </dialog>
-
-        <dialog id="confirm">
-            <form method="dialog">
-                <p>Are you sure you want to remove this file?</p>
-                <div class="actions">
-                    <button value="false">No</button>
-                    <button id="submit" value="true">Yes</button>
-                </div>
-            </form>
-        </dialog>
-
-        <div id="directory-menu" class="menu" style="display:none">
-            <div id="btn-directory">
-                <span class="material-symbols-outlined" color="primary">create_new_folder</span>
-                New directory
-            </div>
-
-            <div id="btn-file">
-                <span class="material-symbols-outlined" color="icon">note_add</span>
-                New file
-            </div>
-
-            <div id="btn-delete">
-                <span class="material-symbols-outlined" color="error">delete</span>
-                Delete
-            </div>
-        </div>
-
-        <div id="file-menu" class="menu" style="display:none">
-            <div id="btn-delete">
-                <span class="material-symbols-outlined" color="error">delete</span>
-                Delete
-            </div>
-        </div>
     </section>
 
     <section id="opfs" style="display:none">
@@ -156,7 +111,32 @@
         </div>
 
         <div id="root"></div>
+    </section>
 
+    <section id="compression" style="display:none">
+        <div>
+            <button id="btn-open">Open a file</button>
+            <button id="btn-encode" disabled>Encode to</button>
+            <button id="btn-decode" disabled>Decode to</button>
+        </div>
+
+        <div class="row">
+            <div id="source" class="card card-expand" style="display:none">
+                <p>Filename: <span id="file-name"></span></p>
+                <p>Type: <span id="file-type"></span></p>
+                <p>Size: <span id="file-size"></span> bytes</p>
+            </div>
+        </div>
+
+        <div id="progress" class="progress" style="display:none">
+            <label id="status"></label>
+            <div id="remaining"></div>
+            <div id="done"></div>
+            <label id="percentage">? %</label>
+        </div>
+    </section>
+
+    <div id="overlay">
         <dialog id="form">
             <form method="dialog">
                 <label>New directory</label>
@@ -206,29 +186,6 @@
                 Delete
             </div>
         </div>
-    </section>
-
-    <section id="compression" style="display:none">
-        <div>
-            <button id="btn-open">Open a file</button>
-            <button id="btn-encode" disabled>Encode to</button>
-            <button id="btn-decode" disabled>Decode to</button>
-        </div>
-
-        <div class="row">
-            <div id="source" class="card card-expand" style="display:none">
-                <p>Filename: <span id="file-name"></span></p>
-                <p>Type: <span id="file-type"></span></p>
-                <p>Size: <span id="file-size"></span> bytes</p>
-            </div>
-        </div>
-
-        <div id="progress" class="progress" style="display:none">
-            <label id="status"></label>
-            <div id="remaining"></div>
-            <div id="done"></div>
-            <label id="percentage">? %</label>
-        </div>
-    </section>
+    </div>
 </body>
 </html>

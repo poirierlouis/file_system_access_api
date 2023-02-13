@@ -8,7 +8,8 @@ abstract class ViewActionsMenu {
 
   final String selector;
 
-  DivElement get $root => document.querySelector(selector) as DivElement;
+  DivElement get $overlay => document.querySelector("div#overlay") as DivElement;
+  DivElement get $root => $overlay.querySelector(selector) as DivElement;
 
   void reset();
 
