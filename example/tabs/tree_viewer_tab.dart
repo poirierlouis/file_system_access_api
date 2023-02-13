@@ -4,7 +4,9 @@ import 'package:file_system_access_api/file_system_access_api.dart';
 
 import '../index.dart';
 import '../light_storage.dart';
+import '../tree/view_directory_menu.dart';
 import '../tree/view_directory_node.dart';
+import '../tree/view_file_menu.dart';
 import 'abstract_tab.dart';
 
 class TreeViewerTab extends Tab {
@@ -16,13 +18,26 @@ class TreeViewerTab extends Tab {
   late final DivElement $root = $view.querySelector("div#root") as DivElement;
   late final DivElement $cardLoading = $view.querySelector("div#loading") as DivElement;
 
+  late final ViewDirectoryMenu $directoryMenu = ViewDirectoryMenu();
+  late final ViewFileMenu $fileMenu = ViewFileMenu(isPrivate: false);
+
   FileSystemDirectoryHandle? _directory;
   ViewDirectoryNode? _tree;
 
   @override
   Future<void> init() async {
+    final $body = document.querySelector("body") as BodyElement;
+
     $btnOpenDirectory.onClick.listen(openDirectoryPicker);
     $btnClearRecent.onClick.listen(clearRecent);
+    $body.onClick.listen((event) {
+      if ($directoryMenu.canHide(event)) {
+        $directoryMenu.hide();
+      } else if ($fileMenu.canHide(event)) {
+        $fileMenu.hide();
+      }
+    });
+    return load();
   }
 
   @override

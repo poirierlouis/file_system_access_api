@@ -201,6 +201,8 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
       $tile.onContextMenu.listen((event) => onShowActions(event, onClick));
       $tile.onDragOver.listen((event) => event.preventDefault());
       $tile.onDrop.listen((event) => onDrop(event, onClick));
+    } else {
+      $tile.onContextMenu.listen((event) => onShowActions(event, onClick));
     }
     $dom!.id = $selector;
     $dom!.append($tile);

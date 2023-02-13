@@ -58,6 +58,8 @@
             <p>Click on directories to open/close their contents.</p>
             <p>Click on an image file to open it in the <span>Image Viewer</span>.</p>
             <p>Click on a text file to open it in the <span>Text Editor</span>.</p>
+            <p>Right-click on a directory to create a sub-folder, create a new file or delete the directory.</p>
+            <p>Right-click on a file to delete the file.</p>
         </div>
 
         <div class="card">
@@ -66,8 +68,7 @@
                 storage endpoint private to the origin of the page. It includes:
             </p>
             <p>All features from <span>Tree Viewer</span>.</p>
-            <p>Right-click on a directory to create a sub-folder, create a new file or delete the directory.</p>
-            <p>Right-click on a file to rename or delete the file.</p>
+            <p>Right-click on a file to rename the file.</p>
         </div>
     </section>
 
@@ -95,9 +96,56 @@
             <button id="open">Open a directory</button>
             <button id="clear">Clear recent</button>
         </div>
+
         <div id="root"></div>
+
         <div id="loading" class="card card-info" style="display:none">
             Loading...
+        </div>
+
+        <dialog id="form">
+            <form method="dialog">
+                <label>New directory</label>
+                <input type="text" placeholder="Name of folder" minlength="1" maxlength="255" />
+                <div class="actions">
+                    <button value="">Cancel</button>
+                    <button id="submit" disabled>Create</button>
+                </div>
+            </form>
+        </dialog>
+
+        <dialog id="confirm">
+            <form method="dialog">
+                <p>Are you sure you want to remove this file?</p>
+                <div class="actions">
+                    <button value="false">No</button>
+                    <button id="submit" value="true">Yes</button>
+                </div>
+            </form>
+        </dialog>
+
+        <div id="directory-menu" class="menu" style="display:none">
+            <div id="btn-directory">
+                <span class="material-symbols-outlined" color="primary">create_new_folder</span>
+                New directory
+            </div>
+
+            <div id="btn-file">
+                <span class="material-symbols-outlined" color="icon">note_add</span>
+                New file
+            </div>
+
+            <div id="btn-delete">
+                <span class="material-symbols-outlined" color="error">delete</span>
+                Delete
+            </div>
+        </div>
+
+        <div id="file-menu" class="menu" style="display:none">
+            <div id="btn-delete">
+                <span class="material-symbols-outlined" color="error">delete</span>
+                Delete
+            </div>
         </div>
     </section>
 

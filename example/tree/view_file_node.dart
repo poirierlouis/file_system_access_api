@@ -12,12 +12,14 @@ import 'view_node.dart';
 class ViewFileNode extends ViewNode<FileSystemFileHandle> {
   ViewFileNode({required super.handle, required super.depth, super.parent, super.isPrivate});
 
-  ViewFileMenu $menu = ViewFileMenu();
+  late final ViewFileMenu $menu = ViewFileMenu(isPrivate: isPrivate);
 
   void onShowActions(MouseEvent event) {
     event.preventDefault();
     $menu.show(event);
-    $menu.$btnRename.onClick.listen((event) => onRename());
+    if (isPrivate) {
+      $menu.$btnRename.onClick.listen((event) => onRename());
+    }
     $menu.$btnDelete.onClick.listen((event) => onDelete());
   }
 
@@ -83,6 +85,8 @@ class ViewFileNode extends ViewNode<FileSystemFileHandle> {
       $dom!.draggable = true;
       $dom!.onContextMenu.listen(onShowActions);
       $dom!.onDragStart.listen(onDrag);
+    } else {
+      $dom!.onContextMenu.listen(onShowActions);
     }
     return $dom!;
   }
