@@ -1,12 +1,11 @@
 import 'dart:js_util';
 
+import 'package:file_system_access_api/src/api/errors.dart';
 import 'package:file_system_access_api/src/api/file_system_kind.dart';
 import 'package:file_system_access_api/src/api/permissions.dart';
 import 'package:file_system_access_api/src/interop/file_system_options.dart';
 import 'package:file_system_access_api/src/interop/interop_utils.dart';
 import 'package:js/js.dart';
-
-import '../../file_system_access_api.dart';
 
 @JS()
 @staticInterop
