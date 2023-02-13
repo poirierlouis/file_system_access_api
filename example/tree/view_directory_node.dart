@@ -79,6 +79,8 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
     if (parent != null) {
       $menu.$btnDelete.show();
       $menu.$btnDelete.onClick.listen((event) => onDelete());
+    } else if (!isPrivate) {
+      $menu.$btnDelete.hide();
     }
   }
 
@@ -167,7 +169,7 @@ class ViewDirectoryNode extends ViewNode<FileSystemDirectoryHandle> {
     }
     try {
       await handle.remove(recursive: true);
-      parent!.removeChild(this);
+      parent?.removeChild(this);
     } catch (error) {
       if (jsIsDomError(error, "NoSuchMethodError")) {
         final directory = parent?.handle;
