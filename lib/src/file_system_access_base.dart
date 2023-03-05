@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:html';
+import 'dart:io' as io;
 
-import 'package:file_system_access_api/src/api/file_system_handle.dart';
+import 'package:file_system_access_api/file_system_access_api.dart';
 import 'package:file_system_access_api/src/interop/interop_utils.dart';
+import 'package:file_system_access_api/src/io/fsa_directory.dart';
+import 'package:file_system_access_api/src/io/fsa_file.dart';
 import 'package:js/js_util.dart' as js;
 
 /// Helpers to bind native JavaScript objects with Dart types of this library.
@@ -45,5 +48,37 @@ class FileSystemAccess {
         .where((handle) => handle != null)
         .cast<FileSystemHandle>()
         .toList();
+  }
+
+  /// Converts [file] to a [File] from `dart:io` with a partial implementation.
+  ///
+  /// Only the following asynchronous methods / properties are implemented, others will throw [UnimplementedError]:
+  /// - [delete]
+  /// - [exists]
+  /// - [isAbsolute] will always return false.
+  /// - [lastModified]
+  /// - [length]
+  /// - [readAsBytes]
+  /// - [readAsLines]
+  /// - [readAsString]
+  /// - [rename] will only change the name of the file, current Web API prevents moving the file using only a path-like
+  /// syntax.
+  /// - [stat] with partial implementation; including only [mode], [modeString], [modified], [size] and [type].
+  /// - [writeAsBytes]
+  /// - [writeAsString]
+  static io.File toFile(final FileSystemFileHandle file) {
+    return FSAFile(file);
+  }
+
+  /// Converts [directory] to a [Directory] from `dart:io` with a partial implementation.
+  ///
+  /// Only the following asynchronous methods / properties are implemented, others will throw [UnimplementedError]:
+  /// - [delete]
+  /// - [exists]
+  /// - [isAbsolute] will always return false.
+  /// - [list]
+  /// - [stat] with partial implementation; including only [mode], [modeString] and [type].
+  static io.Directory toDirectory(final FileSystemDirectoryHandle directory) {
+    return FSADirectory(directory);
   }
 }
