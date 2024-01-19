@@ -7,10 +7,15 @@ Be aware that this demo may contain bugs. You are the only responsible for its u
 Viewer tab with a dummy directory, with contents you don't care.
 
 # Usage
+You might need to install `webdev` if you haven't already:
+```shell
+$ dart pub global activate webdev
+```
+
 To view the examples, run the following command from the root directory of this project – the directory containing 
 `pubspec.yaml`:
 ```shell
-$ dart run webdev serve example:4242 --release
+$ dart pub global run webdev serve example:4242 --release
 ```
 
 Remove `:4242` to start server on default port 8080 or use any other port you wish.
