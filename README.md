@@ -33,9 +33,6 @@ You're all set to play around with the API.
 You can reproduce example from the web API as much of the interfaces are transparent between this Dart library and the 
 JavaScript API.
 
-> Note that you must execute code samples within `main()` as a result of a user gesture (e.g. click event) for security 
-> reason. This part is omitted for brevity.
-
 ### Is browser supported
 You can check if current browser supports the File System Access API with:
 ```dart
@@ -47,6 +44,9 @@ void main() {
   print("Browser support API.");
 }
 ```
+
+> Note that you must execute code samples below within `main()` as a result of a user gesture (e.g. click event) for 
+> security reason. This part is omitted for brevity.
 
 ### Open file(s)
 You can ask a user to open file(s) with the method `window.showOpenFilePicker()` and access selected files like this:
