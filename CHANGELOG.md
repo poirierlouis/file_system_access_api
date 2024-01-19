@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- bump SDK lower constraint to v3.1.0.
+- bump SDK upper constraint to v4.0.0.
+- bump package 'js' to v0.7.0. ([issue #6])
 
 ------------------------
 
@@ -116,4 +120,5 @@ if (handle.kind == FileSystemKind.file) {}
 [0.1.0]: https://github.com/poirierlouis/file_system_access_api/releases/tag/v0.1.0
 
 <!-- Table of issues -->
+[issue #6]: https://github.com/poirierlouis/file_system_access_api/issues/6
 [issue #1]: https://github.com/poirierlouis/file_system_access_api/issues/1
